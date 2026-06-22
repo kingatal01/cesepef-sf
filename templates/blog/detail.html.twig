@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+{% set title = article.title ~ " — CESEPEF" %}
+{% block meta_description %}{{ article.excerpt ?: article.content|slice(0, 155) }}{% endblock %}
+
+{% block body %}
+    <section class="relative z-10 overflow-hidden pt-28 lg:pt-[150px]">
+        <div class="container">
+            <div class="-mx-4 flex flex-wrap items-center">
+                <div class="w-full px-4">
+                    <div class="mb-8 lg:mb-12">
+                        <ul class="mb-5 flex items-center gap-2 text-sm text-body-color">
+                            <li><a href="{{ path('home') }}" class="hover:text-primary">Accueil</a></li>
+                            <li>›</li>
+                            <li><a href="{{ path('blog') }}" class="hover:text-primary">Blog</a></li>
+                        </ul>
+                        {% if article.category %}<span class="mb-3 inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">{{ article.category }}</span>{% endif %}
+                        <h1 class="mb-4 text-3xl font-bold leading-tight text-black dark:text-white sm:text-4xl">{{ article.title }}</h1>
+                        <div class="flex items-center gap-3 text-sm text-body-color">
+                            <span class="font-medium text-black dark:text-white">{{ article.author }}</span>
+                            {% if article.publishedAt %}<span>·</span><span>{{ article.publishedAt|date('d/m/Y') }}</span>{% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="border-b border-body-color/[.15] pb-10 dark:border-white/[.15]"></div>
+    </section>
+
+    <section class="py-16 md:py-20 lg:py-28">
+        <div class="container">
+            <div class="mx-auto max-w-[770px]">
+                {% if article.coverImage %}
+                    <div class="mb-10 overflow-hidden rounded-xs">
+                        <img src="{{ article.coverImage }}" alt="{{ article.title }}" class="w-full object-cover">
+                    </div>
+                {% endif %}
+
+                <div class="prose-content text-base leading-relaxed text-body-color dark:text-body-color-dark">
+                    {% for paragraph in article.content|split('\n') %}
+                        {% if paragraph|trim is not empty %}<p class="mb-6">{{ paragraph|trim }}</p>{% endif %}
+                    {% endfor %}
+                </div>
+
+                {% if article.tags %}
+                    <div class="mt-10 flex flex-wrap gap-2">
+                        {% for t in article.tags %}<span class="rounded-full bg-gray-light px-4 py-1 text-sm text-body-color dark:bg-gray-dark">{{ t }}</span>{% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            {% if related is not empty %}
+                <div class="mx-auto mt-16 max-w-[770px] border-t border-body-color/[.15] pt-10 dark:border-white/[.15]">
+                    <h2 class="mb-6 text-2xl font-bold text-black dark:text-white">Articles liés</h2>
+                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                        {% for r in related %}
+                            <a href="{{ path('blog_detail', {slug: r.slug}) }}" class="rounded-xs bg-white p-6 shadow-one transition hover:shadow-two dark:bg-gray-dark">
+                                <h3 class="mb-2 text-lg font-bold text-black hover:text-primary dark:text-white">{{ r.title }}</h3>
+                                <p class="text-sm text-body-color dark:text-body-color-dark">{{ r.excerpt ?: r.content|slice(0, 100) ~ '…' }}</p>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

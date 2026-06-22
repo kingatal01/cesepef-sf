@@ -1,0 +1,49 @@
+{# Variables : action, publication (Publication|null), cancel_modal (bool) #}
+{% set p = publication %}
+<form method="post" action="{{ action }}" enctype="multipart/form-data" class="flex flex-col overflow-hidden">
+    <input type="hidden" name="_token" value="{{ csrf_token('publications') }}">
+    <div class="flex-1 space-y-4 overflow-y-auto px-6 py-5">
+        <div>
+            <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Titre *</label>
+            <input required name="title" value="{{ p ? p.title : '' }}" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Catégorie</label>
+                <input name="category" value="{{ p ? p.category : '' }}" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white" placeholder="Méthodologie">
+            </div>
+            <div>
+                <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Auteur</label>
+                <input name="author" value="{{ p ? p.author : 'CESEPEF' }}" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+            </div>
+        </div>
+        <div>
+            <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Tags (séparés par des virgules)</label>
+            <input name="tags" value="{{ p and p.tags ? p.tags|join(', ') : '' }}" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white" placeholder="SERA, OCDE, GAR">
+        </div>
+        <div>
+            <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Image de couverture (16:9 — max 3 Mo)</label>
+            <div class="flex items-center gap-3">
+                {% if p and p.coverImage %}<img src="{{ p.coverImage }}" alt="" class="h-12 w-20 rounded object-cover">{% endif %}
+                <input type="file" name="coverImage" accept="image/jpeg,image/png,image/webp" class="w-full text-sm text-gray-500 file:mr-3 file:rounded-lg file:border-0 file:bg-primary/10 file:px-3 file:py-2 file:text-xs file:font-medium file:text-primary">
+            </div>
+        </div>
+        <div>
+            <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Extrait</label>
+            <textarea name="excerpt" rows="2" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">{{ p ? p.excerpt : '' }}</textarea>
+        </div>
+        <div>
+            <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Contenu *</label>
+            <textarea required name="content" rows="6" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">{{ p ? p.content : '' }}</textarea>
+        </div>
+        <label class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300"><input type="checkbox" name="published" value="1" {{ p and p.published ? 'checked' : '' }}> Publier immédiatement</label>
+    </div>
+    <div class="flex shrink-0 justify-end gap-3 border-t border-gray-100 px-6 py-4 dark:border-gray-700">
+        {% if cancel_modal|default(false) %}
+            <button type="button" data-action="modal#close" class="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300">Annuler</button>
+        {% else %}
+            <a href="{{ path('admin_publications') }}" class="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300">Annuler</a>
+        {% endif %}
+        <button type="submit" class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary/90">Enregistrer</button>
+    </div>
+</form>

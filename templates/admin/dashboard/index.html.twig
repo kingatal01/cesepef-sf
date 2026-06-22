@@ -1,0 +1,80 @@
+{% extends 'admin/base.html.twig' %}
+{% block admin_title %}Tableau de bord{% endblock %}
+
+{# Valeurs par défaut (Phase 2) — injectées depuis la BD en Phase 6 #}
+{% set publicationsCount = publicationsCount|default(0) %}
+{% set membresActifs = membresActifs|default(8) %}
+{% set messagesCount = messagesCount|default(0) %}
+{% set messagesNonLus = messagesNonLus|default(0) %}
+{% set servicesActifs = servicesActifs|default(7) %}
+{% set realisationsCount = realisationsCount|default(0) %}
+
+{% block admin_body %}
+    {# Bannière #}
+    <div class="mb-6 rounded-xl bg-primary p-6 text-white">
+        <h2 class="text-xl font-bold">Bienvenue dans l'espace administration CESEPEF</h2>
+        <p class="mt-1 text-sm text-white/80">Gérez le contenu du site : équipe, publications, services, réalisations et messages.</p>
+    </div>
+
+    {# Stats principales #}
+    <div class="mb-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
+        {% set cards = [
+            { label: 'Publications', value: publicationsCount, change: publicationsCount == 0 ? 'Aucune encore' : publicationsCount ~ ' au total', color: 'bg-blue-50 text-blue-600 dark:bg-blue-950', iconBg: 'bg-blue-100 dark:bg-blue-900', icon: '<path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>' },
+            { label: 'Membres actifs', value: membresActifs, change: 'Équipe opérationnelle', color: 'bg-green-50 text-green-600 dark:bg-green-950', iconBg: 'bg-green-100 dark:bg-green-900', icon: '<path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5z"/>' },
+            { label: 'Messages reçus', value: messagesCount, change: messagesNonLus > 0 ? messagesNonLus ~ ' non lu(s)' : 'Tous lus', color: 'bg-yellow-50 text-yellow-600 dark:bg-yellow-950', iconBg: 'bg-yellow-100 dark:bg-yellow-900', alert: messagesNonLus > 0, icon: '<path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>' },
+            { label: 'Services actifs', value: servicesActifs, change: 'Offres publiées', color: 'bg-purple-50 text-purple-600 dark:bg-purple-950', iconBg: 'bg-purple-100 dark:bg-purple-900', icon: '<path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>' }
+        ] %}
+        {% for s in cards %}
+            <div class="rounded-xl p-5 {{ s.color }}">
+                <div class="mb-3 inline-flex rounded-lg p-2 {{ s.iconBg }}">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">{{ s.icon|raw }}</svg>
+                </div>
+                <div class="flex items-end gap-1">
+                    <p class="text-2xl font-bold">{{ s.value }}</p>
+                    {% if s.alert is defined and s.alert %}<span class="mb-0.5 rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-bold text-white">!</span>{% endif %}
+                </div>
+                <p class="text-sm font-medium">{{ s.label }}</p>
+                <p class="mt-1 text-xs opacity-60">{{ s.change }}</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    {# Stats secondaires #}
+    <div class="mb-8 grid grid-cols-2 gap-4">
+        <div class="rounded-xl border border-gray-100 bg-white p-5 dark:border-gray-700 dark:bg-gray-900">
+            <p class="text-xs font-medium uppercase tracking-wider text-gray-400">Réalisations publiées</p>
+            <p class="mt-1 text-3xl font-bold text-gray-800 dark:text-white">{{ realisationsCount }}</p>
+        </div>
+        <div class="rounded-xl border border-gray-100 bg-white p-5 dark:border-gray-700 dark:bg-gray-900">
+            <p class="text-xs font-medium uppercase tracking-wider text-gray-400">Messages non lus</p>
+            <p class="mt-1 text-3xl font-bold {{ messagesNonLus > 0 ? 'text-red-500' : 'text-gray-800 dark:text-white' }}">{{ messagesNonLus }}</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        {# Activité récente #}
+        <div class="rounded-xl bg-white p-6 shadow-sm dark:bg-gray-900">
+            <h3 class="mb-4 text-base font-semibold text-gray-800 dark:text-white">Activité récente</h3>
+            <p class="text-sm text-gray-400">Aucune activité pour l'instant.</p>
+        </div>
+
+        {# Accès rapide #}
+        <div class="rounded-xl bg-white p-6 shadow-sm dark:bg-gray-900">
+            <h3 class="mb-4 text-base font-semibold text-gray-800 dark:text-white">Accès rapide</h3>
+            <div class="grid grid-cols-2 gap-3">
+                {% for l in [
+                    { label: 'Ajouter une publication', route: 'admin_publications' },
+                    { label: 'Voir les messages', route: 'admin_messages' },
+                    { label: "Gérer l'équipe", route: 'admin_equipe' },
+                    { label: 'Modifier les services', route: 'admin_services' },
+                    { label: 'Ajouter une réalisation', route: 'admin_realisations' },
+                    { label: 'Paramètres', route: 'admin_parametres' }
+                ] %}
+                    <a href="{{ path(l.route) }}" class="flex items-center gap-2 rounded-lg border border-gray-100 p-3 text-sm font-medium text-gray-700 transition hover:border-primary hover:text-primary dark:border-gray-700 dark:text-gray-300">
+                        <span class="leading-tight">{{ l.label }}</span>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

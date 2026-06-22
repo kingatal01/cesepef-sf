@@ -1,0 +1,62 @@
+{# Variables : action (url), member (TeamMember|null), cancel_modal (bool) #}
+{% set departments = ['Direction / Gouvernance', 'Suivi & Évaluation', 'Études & Recherches', 'Formation', 'Conseil & Projets', 'Administration'] %}
+<form method="post" action="{{ action }}" enctype="multipart/form-data" class="flex flex-col overflow-hidden">
+    <input type="hidden" name="_token" value="{{ csrf_token('equipe') }}">
+    <div class="flex-1 overflow-y-auto px-6 py-5">
+        <div class="grid grid-cols-2 gap-4">
+            <div class="col-span-2 flex items-center gap-4">
+                <div class="h-16 w-16 shrink-0 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
+                    {% if member and member.photo %}<img src="{{ member.photo }}" alt="" class="h-full w-full object-cover">{% endif %}
+                </div>
+                <div>
+                    <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Photo (JPG, PNG, WEBP, GIF — max 2 Mo)</label>
+                    <input type="file" name="photo" accept="image/jpeg,image/png,image/webp,image/gif" class="w-full text-sm text-gray-500 file:mr-3 file:rounded-lg file:border-0 file:bg-primary/10 file:px-3 file:py-2 file:text-xs file:font-medium file:text-primary">
+                </div>
+            </div>
+            <div class="col-span-2">
+                <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Nom complet *</label>
+                <input required name="name" value="{{ member ? member.name : '' }}" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white" placeholder="ADOUMBEYE Amine">
+            </div>
+            <div class="col-span-2">
+                <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Poste / Fonction *</label>
+                <input required name="role" value="{{ member ? member.role : '' }}" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white" placeholder="Chef de département">
+            </div>
+            <div>
+                <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Département</label>
+                <select name="department" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                    <option value="">— Sélectionner —</option>
+                    {% for d in departments %}<option {{ member and member.department == d ? 'selected' : '' }}>{{ d }}</option>{% endfor %}
+                </select>
+            </div>
+            <div>
+                <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Ordre d'affichage</label>
+                <input type="number" min="0" name="position" value="{{ member ? member.position : 0 }}" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+            </div>
+            <div>
+                <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Email</label>
+                <input type="email" name="email" value="{{ member ? member.email : '' }}" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white" placeholder="contact@cesepef.org">
+            </div>
+            <div>
+                <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">LinkedIn</label>
+                <input name="linkedin" value="{{ member ? member.linkedin : '' }}" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white" placeholder="https://linkedin.com/in/...">
+            </div>
+            <div class="col-span-2">
+                <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Biographie courte</label>
+                <textarea name="bio" rows="3" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white" placeholder="Expertise principale, parcours...">{{ member ? member.bio : '' }}</textarea>
+            </div>
+            <div class="col-span-2">
+                <label class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
+                    <input type="checkbox" name="isActive" value="1" {{ (member is null or member.isActive) ? 'checked' : '' }}> Membre actif
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="flex shrink-0 justify-end gap-3 border-t border-gray-100 px-6 py-4 dark:border-gray-700">
+        {% if cancel_modal|default(false) %}
+            <button type="button" data-action="modal#close" class="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300">Annuler</button>
+        {% else %}
+            <a href="{{ path('admin_equipe') }}" class="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300">Annuler</a>
+        {% endif %}
+        <button type="submit" class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary/90">Enregistrer</button>
+    </div>
+</form>

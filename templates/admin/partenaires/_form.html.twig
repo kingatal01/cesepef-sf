@@ -1,0 +1,43 @@
+{# Variables : action, partner (Partner|null), cancel_modal (bool) #}
+{% set categories = ['Multilatéral', 'Bilatéral', 'Nations Unies', 'Institution financière', 'ONG internationale', 'État/Gouvernement', 'Secteur privé'] %}
+<form method="post" action="{{ action }}" enctype="multipart/form-data" class="flex flex-col overflow-hidden">
+    <input type="hidden" name="_token" value="{{ csrf_token('partenaires') }}">
+    <div class="flex-1 space-y-4 overflow-y-auto px-6 py-5">
+        <div>
+            <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Nom *</label>
+            <input required name="name" value="{{ partner ? partner.name : '' }}" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white" placeholder="Banque Mondiale">
+        </div>
+        <div>
+            <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Logo (JPG, PNG, WEBP, SVG — max 2 Mo)</label>
+            <div class="flex items-center gap-3">
+                {% if partner and partner.logo %}<img src="{{ partner.logo }}" alt="" class="h-10 w-auto rounded bg-gray-50 p-1">{% endif %}
+                <input type="file" name="logo" accept="image/jpeg,image/png,image/webp,image/svg+xml" class="w-full text-sm text-gray-500 file:mr-3 file:rounded-lg file:border-0 file:bg-primary/10 file:px-3 file:py-2 file:text-xs file:font-medium file:text-primary">
+            </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Site web</label>
+                <input name="website" value="{{ partner ? partner.website : '' }}" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white" placeholder="https://…">
+            </div>
+            <div>
+                <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Catégorie</label>
+                <select name="category" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                    {% for c in categories %}<option {{ partner and partner.category == c ? 'selected' : '' }}>{{ c }}</option>{% endfor %}
+                </select>
+            </div>
+            <div>
+                <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Ordre d'affichage</label>
+                <input type="number" min="0" name="position" value="{{ partner ? partner.position : 0 }}" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+            </div>
+        </div>
+        <label class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300"><input type="checkbox" name="isActive" value="1" {{ (partner is null or partner.isActive) ? 'checked' : '' }}> Partenaire actif</label>
+    </div>
+    <div class="flex shrink-0 justify-end gap-3 border-t border-gray-100 px-6 py-4 dark:border-gray-700">
+        {% if cancel_modal|default(false) %}
+            <button type="button" data-action="modal#close" class="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300">Annuler</button>
+        {% else %}
+            <a href="{{ path('admin_partenaires') }}" class="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300">Annuler</a>
+        {% endif %}
+        <button type="submit" class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary/90">Enregistrer</button>
+    </div>
+</form>

@@ -1,0 +1,44 @@
+{# Variables : action, service (Service|null), cancel_modal (bool) #}
+<form method="post" action="{{ action }}" class="flex flex-col overflow-hidden">
+    <input type="hidden" name="_token" value="{{ csrf_token('services') }}">
+    <div class="flex-1 space-y-4 overflow-y-auto px-6 py-5">
+        <div>
+            <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Titre *</label>
+            <input required name="title" value="{{ service ? service.title : '' }}" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white" placeholder="Évaluation 360°">
+        </div>
+        <div>
+            <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Description *</label>
+            <textarea required name="description" rows="3" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">{{ service ? service.description : '' }}</textarea>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Cible</label>
+                <input name="cible" value="{{ service ? service.cible : '' }}" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white" placeholder="Bailleurs, ONG…">
+            </div>
+            <div>
+                <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Délai indicatif</label>
+                <input name="delai" value="{{ service ? service.delai : '' }}" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white" placeholder="8 à 16 semaines">
+            </div>
+        </div>
+        <div>
+            <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Livrables (un par ligne)</label>
+            <textarea name="livrables" rows="4" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white" placeholder="Rapport principal&#10;Note de synthèse">{{ service and service.livrables ? service.livrables|join("\n") : '' }}</textarea>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Ordre d'affichage</label>
+                <input type="number" min="0" name="position" value="{{ service ? service.position : 0 }}" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+            </div>
+        </div>
+        <label class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300"><input type="checkbox" name="highlight" value="1" {{ service and service.highlight ? 'checked' : '' }}> Offre mise en avant (Populaire)</label>
+        <label class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300"><input type="checkbox" name="isActive" value="1" {{ (service is null or service.isActive) ? 'checked' : '' }}> Offre active</label>
+    </div>
+    <div class="flex shrink-0 justify-end gap-3 border-t border-gray-100 px-6 py-4 dark:border-gray-700">
+        {% if cancel_modal|default(false) %}
+            <button type="button" data-action="modal#close" class="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300">Annuler</button>
+        {% else %}
+            <a href="{{ path('admin_services') }}" class="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300">Annuler</a>
+        {% endif %}
+        <button type="submit" class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary/90">Enregistrer</button>
+    </div>
+</form>

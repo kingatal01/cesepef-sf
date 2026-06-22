@@ -1,0 +1,72 @@
+{% extends 'admin/base.html.twig' %}
+{% block admin_title %}Services{% endblock %}
+
+{% block admin_body %}
+    <div class="mb-6 flex items-center justify-between">
+        <p class="text-sm text-gray-500 dark:text-gray-400"><span class="font-medium text-gray-700 dark:text-gray-200">{{ services|length }}</span> offres</p>
+        <button data-action="modal#open" data-modal-id-param="modal-service" class="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary/90">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+            Ajouter une offre
+        </button>
+    </div>
+
+    <div class="rounded-xl bg-white shadow-sm dark:bg-gray-900">
+        {% if services is empty %}
+            <div class="flex flex-col items-center justify-center gap-3 py-16 text-gray-400">
+                <p class="text-sm">Aucune offre pour l'instant</p>
+                <button data-action="modal#open" data-modal-id-param="modal-service" class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white">Ajouter la première offre</button>
+            </div>
+        {% else %}
+            <table class="w-full text-left text-sm">
+                <thead>
+                    <tr class="border-b border-gray-100 dark:border-gray-700">
+                        <th class="px-6 py-4 font-semibold text-gray-500 dark:text-gray-400">Offre</th>
+                        <th class="hidden px-6 py-4 font-semibold text-gray-500 dark:text-gray-400 md:table-cell">Cible</th>
+                        <th class="hidden px-6 py-4 font-semibold text-gray-500 dark:text-gray-400 lg:table-cell">Délai</th>
+                        <th class="px-6 py-4 font-semibold text-gray-500 dark:text-gray-400">Statut</th>
+                        <th class="px-6 py-4 font-semibold text-gray-500 dark:text-gray-400">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for s in services %}
+                        <tr class="border-b border-gray-50 transition hover:bg-gray-50 dark:border-gray-800 dark:hover:bg-gray-800">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-2">
+                                    <p class="font-medium text-gray-800 dark:text-white">{{ s.title }}</p>
+                                    {% if s.highlight %}<span class="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary">Populaire</span>{% endif %}
+                                </div>
+                            </td>
+                            <td class="hidden px-6 py-4 text-gray-600 dark:text-gray-300 md:table-cell">{{ s.cible ?: '—' }}</td>
+                            <td class="hidden px-6 py-4 text-gray-600 dark:text-gray-300 lg:table-cell">{{ s.delai ?: '—' }}</td>
+                            <td class="px-6 py-4">
+                                <form method="post" action="{{ path('admin_services_toggle', {id: s.id}) }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('services') }}">
+                                    <button type="submit" class="inline-flex rounded-full px-3 py-1 text-xs font-medium transition {{ s.isActive ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-gray-100 text-gray-500 hover:bg-gray-200' }}">{{ s.isActive ? 'Actif' : 'Inactif' }}</button>
+                                </form>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex gap-2">
+                                    <a href="{{ path('admin_services_edit', {id: s.id}) }}" class="rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 hover:border-primary hover:text-primary dark:border-gray-600 dark:text-gray-300">Modifier</a>
+                                    <form method="post" action="{{ path('admin_services_delete', {id: s.id}) }}" data-turbo-confirm="Supprimer l'offre « {{ s.title }} » ?">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('services') }}">
+                                        <button type="submit" class="rounded-lg border border-red-100 px-3 py-1.5 text-xs font-medium text-red-500 hover:bg-red-50">Supprimer</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+
+    <div id="modal-service" data-modal-target="overlay" data-action="modal#backdrop" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4 flex">
+        <div class="flex max-h-[90vh] w-full max-w-lg flex-col rounded-2xl bg-white shadow-2xl dark:bg-gray-900">
+            <div class="flex shrink-0 items-center justify-between border-b border-gray-100 px-6 py-4 dark:border-gray-700">
+                <h2 class="text-base font-semibold text-gray-800 dark:text-white">Ajouter une offre</h2>
+                <button data-action="modal#close" class="rounded-lg p-1 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+            </div>
+            {{ include('admin/services/_form.html.twig', { action: path('admin_services_new'), service: null, cancel_modal: true }) }}
+        </div>
+    </div>
+{% endblock %}

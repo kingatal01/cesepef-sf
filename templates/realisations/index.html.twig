@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+{% set title = "Réalisations — CESEPEF" %}
+
+{% block body %}
+    <section class="relative z-10 overflow-hidden pt-28 lg:pt-[150px]">
+        <div class="container">
+            <div class="-mx-4 flex flex-wrap items-center">
+                <div class="w-full px-4 md:w-8/12 lg:w-7/12">
+                    <div class="mb-8 max-w-[570px] md:mb-0 lg:mb-12">
+                        <h1 class="mb-5 text-2xl font-bold text-black dark:text-white sm:text-3xl">Nos Réalisations</h1>
+                        <p class="text-base font-medium leading-relaxed text-body-color">Un aperçu des missions menées par CESEPEF au Tchad et dans la sous-région, au service des bailleurs, des administrations et des organisations de développement.</p>
+                    </div>
+                </div>
+                <div class="w-full px-4 md:w-4/12 lg:w-5/12">
+                    <div class="text-end">
+                        <ul class="flex items-center md:justify-end">
+                            <li class="flex items-center"><a href="{{ path('home') }}" class="pr-1 text-base font-medium text-body-color hover:text-primary">Accueil</a><span class="mr-3 block h-2 w-2 rotate-45 border-t-2 border-r-2 border-body-color"></span></li>
+                            <li class="text-base font-medium text-primary">Réalisations</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="border-b border-body-color/[.15] pb-10 dark:border-white/[.15]"></div>
+    </section>
+
+    <section class="py-16 md:py-20 lg:py-28" data-controller="realisations-filter">
+        <div class="container">
+            {% if realisations is empty %}
+                <p class="text-center text-body-color">Nos réalisations seront publiées prochainement.</p>
+            {% else %}
+                {% if sectors|length > 1 %}
+                    <div class="mb-10 flex flex-wrap justify-center gap-3">
+                        <button data-realisations-filter-target="button" data-sector="all" data-action="realisations-filter#filter" data-realisations-filter-sector-param="all" class="rounded-full bg-primary px-5 py-2 text-sm font-medium text-white transition">Tous</button>
+                        {% for s in sectors %}
+                            <button data-realisations-filter-target="button" data-sector="{{ s }}" data-action="realisations-filter#filter" data-realisations-filter-sector-param="{{ s }}" class="rounded-full bg-gray-100 px-5 py-2 text-sm font-medium text-body-color transition dark:bg-gray-dark">{{ s }}</button>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <div class="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
+                    {% for r in realisations %}
+                        <div data-realisations-filter-target="item" data-sector="{{ r.sector }}" class="group overflow-hidden rounded-xs bg-white shadow-one transition hover:shadow-two dark:bg-gray-dark">
+                            <div class="relative aspect-[37/22] w-full overflow-hidden">
+                                {% if r.image %}<img src="{{ r.image }}" alt="{{ r.title }}" class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
+                                {% else %}<div class="flex h-full w-full items-center justify-center bg-primary/10"><span class="text-4xl font-bold text-primary/20">{{ r.title|first }}</span></div>{% endif %}
+                                {% if r.sector %}<span class="absolute right-4 top-4 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white">{{ r.sector }}</span>{% endif %}
+                            </div>
+                            <div class="p-6">
+                                <div class="mb-2 flex items-center gap-2 text-xs text-body-color">
+                                    <span>{{ r.country }}</span>{% if r.year %}<span>· {{ r.year }}</span>{% endif %}
+                                </div>
+                                <h3 class="mb-2 text-lg font-bold text-black dark:text-white">{{ r.title }}</h3>
+                                {% if r.client %}<p class="mb-2 text-xs font-medium text-primary">{{ r.client }}</p>{% endif %}
+                                <p class="text-sm text-body-color dark:text-body-color-dark">{{ r.description }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    {# Chiffres clés #}
+    <section class="bg-primary py-12">
+        <div class="container">
+            <div class="grid grid-cols-2 gap-6 text-center md:grid-cols-4">
+                {% for s in [
+                    { value: '50+', label: 'Missions accompagnées' },
+                    { value: '8+', label: "Pays d'intervention" },
+                    { value: '8', label: "Secteurs d'intervention" },
+                    { value: '95%', label: 'Taux de satisfaction' }
+                ] %}
+                    <div>
+                        <p class="mb-1 text-3xl font-extrabold text-white lg:text-4xl">{{ s.value }}</p>
+                        <p class="text-sm font-medium text-white/80">{{ s.label }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

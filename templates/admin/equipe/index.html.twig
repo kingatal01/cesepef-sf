@@ -1,0 +1,86 @@
+{% extends 'admin/base.html.twig' %}
+{% block admin_title %}Équipe{% endblock %}
+
+{% block admin_body %}
+    <div class="mb-6 flex items-center justify-between">
+        <p class="text-sm text-gray-500 dark:text-gray-400">
+            <span class="font-medium text-gray-700 dark:text-gray-200">{{ members|length }}</span> membres ·
+            <span class="font-medium text-green-600">{{ members|filter(m => m.isActive)|length }} actifs</span>
+        </p>
+        <button data-action="modal#open" data-modal-id-param="modal-equipe" class="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary/90">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+            Ajouter un membre
+        </button>
+    </div>
+
+    <div class="rounded-xl bg-white shadow-sm dark:bg-gray-900">
+        {% if members is empty %}
+            <div class="flex flex-col items-center justify-center gap-3 py-16 text-gray-400">
+                <p class="text-sm">Aucun membre pour l'instant</p>
+                <button data-action="modal#open" data-modal-id-param="modal-equipe" class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white">Ajouter le premier membre</button>
+            </div>
+        {% else %}
+            <table class="w-full text-left text-sm">
+                <thead>
+                    <tr class="border-b border-gray-100 dark:border-gray-700">
+                        <th class="px-6 py-4 font-semibold text-gray-500 dark:text-gray-400">Membre</th>
+                        <th class="hidden px-6 py-4 font-semibold text-gray-500 dark:text-gray-400 md:table-cell">Département</th>
+                        <th class="px-6 py-4 font-semibold text-gray-500 dark:text-gray-400">Statut</th>
+                        <th class="px-6 py-4 font-semibold text-gray-500 dark:text-gray-400">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for m in members %}
+                        <tr class="border-b border-gray-50 transition hover:bg-gray-50 dark:border-gray-800 dark:hover:bg-gray-800">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="h-9 w-9 shrink-0 overflow-hidden rounded-full bg-primary/10">
+                                        {% if m.photo %}<img src="{{ m.photo }}" alt="{{ m.name }}" class="h-full w-full object-cover">
+                                        {% else %}<div class="flex h-full w-full items-center justify-center text-sm font-bold text-primary">{{ m.name|first }}</div>{% endif %}
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-gray-800 dark:text-white">{{ m.name }}</p>
+                                        <p class="text-xs text-gray-400">{{ m.role }}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="hidden px-6 py-4 text-gray-600 dark:text-gray-300 md:table-cell">{{ m.department ?: '—' }}</td>
+                            <td class="px-6 py-4">
+                                <form method="post" action="{{ path('admin_equipe_toggle', {id: m.id}) }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('equipe') }}">
+                                    <button type="submit" class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition {{ m.isActive ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-gray-100 text-gray-500 hover:bg-gray-200' }}">{{ m.isActive ? 'Actif' : 'Inactif' }}</button>
+                                </form>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex gap-2">
+                                    <a href="{{ path('admin_equipe_edit', {id: m.id}) }}" class="flex items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 hover:border-primary hover:text-primary dark:border-gray-600 dark:text-gray-300">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                                        Modifier
+                                    </a>
+                                    <form method="post" action="{{ path('admin_equipe_delete', {id: m.id}) }}" data-turbo-confirm="Supprimer définitivement « {{ m.name }} » ?">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('equipe') }}">
+                                        <button type="submit" class="flex items-center gap-1.5 rounded-lg border border-red-100 px-3 py-1.5 text-xs font-medium text-red-500 hover:bg-red-50">
+                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                                            Supprimer
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+
+    {# Modale d'ajout #}
+    <div id="modal-equipe" data-modal-target="overlay" data-action="modal#backdrop" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4 flex">
+        <div class="flex max-h-[90vh] w-full max-w-lg flex-col rounded-2xl bg-white shadow-2xl dark:bg-gray-900">
+            <div class="flex shrink-0 items-center justify-between border-b border-gray-100 px-6 py-4 dark:border-gray-700">
+                <h2 class="text-base font-semibold text-gray-800 dark:text-white">Ajouter un membre</h2>
+                <button data-action="modal#close" class="rounded-lg p-1 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+            </div>
+            {{ include('admin/equipe/_form.html.twig', { action: path('admin_equipe_new'), member: null, cancel_modal: true }) }}
+        </div>
+    </div>
+{% endblock %}

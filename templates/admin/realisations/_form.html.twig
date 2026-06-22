@@ -1,0 +1,66 @@
+{# Variables : action, realisation (Realisation|null), cancel_modal (bool) #}
+{% set r = realisation %}
+{% set sectors = ['Santé', 'Éducation', 'Agriculture & Sécurité alimentaire', 'Environnement', 'Emploi & Formation professionnelle', 'Gouvernance', 'Action humanitaire', 'Développement territorial'] %}
+{% set countries = ['Tchad', 'Cameroun', 'RCA', 'Niger', 'Mali', 'Burkina Faso', 'Sénégal', "Côte d'Ivoire", 'RDC', 'Bénin', 'Togo', 'Autre'] %}
+<form method="post" action="{{ action }}" enctype="multipart/form-data" class="flex flex-col overflow-hidden">
+    <input type="hidden" name="_token" value="{{ csrf_token('realisations') }}">
+    <div class="flex-1 space-y-4 overflow-y-auto px-6 py-5">
+        <div>
+            <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Titre *</label>
+            <input required name="title" value="{{ r ? r.title : '' }}" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+        </div>
+        <div>
+            <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Description *</label>
+            <textarea required name="description" rows="3" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">{{ r ? r.description : '' }}</textarea>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Client</label>
+                <input name="client" value="{{ r ? r.client : '' }}" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+            </div>
+            <div>
+                <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Année</label>
+                <input type="number" name="year" value="{{ r ? r.year : '' }}" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+            </div>
+            <div>
+                <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Secteur</label>
+                <select name="sector" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                    <option value="">— Sélectionner —</option>
+                    {% for s in sectors %}<option {{ r and r.sector == s ? 'selected' : '' }}>{{ s }}</option>{% endfor %}
+                </select>
+            </div>
+            <div>
+                <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Pays</label>
+                <select name="country" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                    {% for c in countries %}<option {{ (r ? r.country : 'Tchad') == c ? 'selected' : '' }}>{{ c }}</option>{% endfor %}
+                </select>
+            </div>
+        </div>
+        <div>
+            <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Tags (séparés par des virgules)</label>
+            <input name="tags" value="{{ r and r.tags ? r.tags|join(', ') : '' }}" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+        </div>
+        <div>
+            <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Image (16:9 — max 3 Mo)</label>
+            <div class="flex items-center gap-3">
+                {% if r and r.image %}<img src="{{ r.image }}" alt="" class="h-12 w-20 rounded object-cover">{% endif %}
+                <input type="file" name="image" accept="image/jpeg,image/png,image/webp" class="w-full text-sm text-gray-500 file:mr-3 file:rounded-lg file:border-0 file:bg-primary/10 file:px-3 file:py-2 file:text-xs file:font-medium file:text-primary">
+            </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Ordre d'affichage</label>
+                <input type="number" min="0" name="position" value="{{ r ? r.position : 0 }}" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+            </div>
+        </div>
+        <label class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300"><input type="checkbox" name="isPublished" value="1" {{ (r is null or r.isPublished) ? 'checked' : '' }}> Visible sur le site</label>
+    </div>
+    <div class="flex shrink-0 justify-end gap-3 border-t border-gray-100 px-6 py-4 dark:border-gray-700">
+        {% if cancel_modal|default(false) %}
+            <button type="button" data-action="modal#close" class="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300">Annuler</button>
+        {% else %}
+            <a href="{{ path('admin_realisations') }}" class="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300">Annuler</a>
+        {% endif %}
+        <button type="submit" class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary/90">Enregistrer</button>
+    </div>
+</form>

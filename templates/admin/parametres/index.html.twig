@@ -1,0 +1,66 @@
+{% extends 'admin/base.html.twig' %}
+{% block admin_title %}Paramètres{% endblock %}
+
+{% block admin_body %}
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        {# Informations générales #}
+        <div class="rounded-xl bg-white p-6 shadow-sm dark:bg-gray-900">
+            <h3 class="mb-5 text-base font-semibold text-gray-800 dark:text-white">Informations générales</h3>
+            <form method="post" action="{{ path('admin_parametres_site') }}" class="space-y-4">
+                <input type="hidden" name="_token" value="{{ csrf_token('parametres') }}">
+                <div>
+                    <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Nom du site</label>
+                    <input name="site_name" value="{{ settings.site_name|default('') }}" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Email principal</label>
+                        <input name="site_email" value="{{ settings.site_email|default('') }}" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                    </div>
+                    <div>
+                        <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Téléphone 1</label>
+                        <input name="site_phone1" value="{{ settings.site_phone1|default('') }}" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                    </div>
+                    <div>
+                        <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Téléphone 2</label>
+                        <input name="site_phone2" value="{{ settings.site_phone2|default('') }}" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                    </div>
+                    <div>
+                        <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">NIF</label>
+                        <input name="site_nif" value="{{ settings.site_nif|default('') }}" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                    </div>
+                </div>
+                <div>
+                    <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Adresse</label>
+                    <textarea name="site_address" rows="2" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">{{ settings.site_address|default('') }}</textarea>
+                </div>
+                <div>
+                    <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Capital social</label>
+                    <input name="site_capital" value="{{ settings.site_capital|default('') }}" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                </div>
+                <button type="submit" class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary/90">Enregistrer</button>
+            </form>
+        </div>
+
+        {# Compte administrateur #}
+        <div class="rounded-xl bg-white p-6 shadow-sm dark:bg-gray-900">
+            <h3 class="mb-5 text-base font-semibold text-gray-800 dark:text-white">Compte administrateur</h3>
+            <form method="post" action="{{ path('admin_parametres_compte') }}" class="space-y-4">
+                <input type="hidden" name="_token" value="{{ csrf_token('parametres') }}">
+                <div>
+                    <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Nom</label>
+                    <input name="name" value="{{ app.user.name }}" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                </div>
+                <div>
+                    <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Email</label>
+                    <input name="email" type="email" value="{{ app.user.email }}" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                </div>
+                <div>
+                    <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300">Nouveau mot de passe <span class="text-gray-400">(laisser vide pour conserver)</span></label>
+                    <input name="password" type="password" placeholder="••••••••" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                </div>
+                <button type="submit" class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary/90">Mettre à jour</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

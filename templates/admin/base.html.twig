@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block admin_title %}Administration{% endblock %} — CESEPEF</title>
+    <link rel="icon" href="{{ asset('images/favicon.png') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap">
+    <script>(function(){try{if(localStorage.getItem('theme')==='dark')document.documentElement.classList.add('dark');}catch(e){}})();</script>
+    {{ encore_entry_link_tags('app') }}
+    {{ encore_entry_script_tags('app') }}
+</head>
+<body class="bg-gray-50 dark:bg-gray-950">
+{% set unread = unread_messages() %}
+{% set current = app.request.attributes.get('_route') %}
+{% set nav = [
+    { label: 'Tableau de bord', route: 'admin_dashboard', icon: '<path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>' },
+    { label: 'Équipe', route: 'admin_equipe', icon: '<path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>' },
+    { label: 'Blog', route: 'admin_publications', icon: '<path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>' },
+    { label: 'Services', route: 'admin_services', icon: '<path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>' },
+    { label: 'Réalisations', route: 'admin_realisations', icon: '<path d="M12 2l2.39 4.84 5.34.78-3.87 3.77.91 5.32L12 14.97l-4.77 2.51.91-5.32L4.27 8.39l5.34-.78L12 2z"/>' },
+    { label: 'Messages', route: 'admin_messages', icon: '<path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>' },
+    { label: 'Partenaires', route: 'admin_partenaires', icon: '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>' },
+    { label: 'Paramètres', route: 'admin_parametres', icon: '<path d="M12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5zm7.43-2.47c.04-.34.07-.68.07-1.03s-.03-.69-.07-1.03l2.11-1.63c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.63c-.04.34-.07.67-.07 1.03s.03.69.07 1.03l-2.11 1.63c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.58 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.63z"/>' }
+] %}
+
+<div class="flex h-screen overflow-hidden" data-controller="admin-sidebar">
+    {# Backdrop mobile #}
+    <div data-admin-sidebar-target="backdrop" data-action="admin-sidebar#close" class="fixed inset-0 z-30 hidden bg-black/50 lg:hidden"></div>
+
+    {# Sidebar #}
+    <aside data-admin-sidebar-target="panel" class="fixed inset-y-0 left-0 z-40 flex h-screen w-64 -translate-x-full flex-col border-r border-gray-200 bg-white transition-transform dark:border-gray-700 dark:bg-gray-900 lg:static lg:translate-x-0">
+        <div class="flex h-16 items-center border-b border-gray-200 px-6 dark:border-gray-700">
+            <a href="{{ path('admin_dashboard') }}" class="flex items-center gap-2">
+                <img src="{{ asset('images/logo/logo-cesepef.jpg') }}" alt="CESEPEF" class="h-8 w-auto">
+                <span class="text-xs font-semibold text-gray-500 dark:text-gray-400">Admin</span>
+            </a>
+        </div>
+        <nav class="flex-1 overflow-y-auto px-3 py-4">
+            <ul class="space-y-1">
+                {% for item in nav %}
+                    {% set active = current == item.route %}
+                    <li>
+                        <a href="{{ path(item.route) }}" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors {{ active ? 'bg-primary text-white' : 'text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800' }}">
+                            <span class="{{ active ? 'text-white' : 'text-gray-400 dark:text-gray-500' }}">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">{{ item.icon|raw }}</svg>
+                            </span>
+                            <span class="flex-1">{{ item.label }}</span>
+                            {% if item.route == 'admin_messages' and unread > 0 %}
+                                <span class="rounded-full bg-red-500 px-2 py-0.5 text-xs font-bold text-white">{{ unread > 99 ? '99+' : unread }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </nav>
+        <div class="border-t border-gray-200 p-4 dark:border-gray-700">
+            <a href="{{ path('home') }}" target="_blank" class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-gray-500 hover:text-primary dark:text-gray-400">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                Voir le site
+            </a>
+            <a href="{{ path('admin_logout') }}" class="mt-1 flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-gray-500 hover:text-red-500 dark:text-gray-400">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5-5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+                Déconnexion
+            </a>
+        </div>
+    </aside>
+
+    {# Contenu #}
+    <div class="flex flex-1 flex-col overflow-hidden" data-controller="modal">
+        <header class="flex h-16 items-center justify-between border-b border-gray-200 bg-white px-6 dark:border-gray-700 dark:bg-gray-900">
+            <div class="flex items-center gap-3">
+                <button data-action="admin-sidebar#toggle" class="rounded-lg p-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 lg:hidden">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/></svg>
+                </button>
+                <h1 class="text-lg font-semibold text-gray-800 dark:text-white">{% block admin_heading %}{{ block('admin_title') }}{% endblock %}</h1>
+            </div>
+            <div class="flex items-center gap-4">
+                <button class="relative rounded-lg p-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+                    {% if unread > 0 %}<span class="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500"></span>{% endif %}
+                </button>
+                <div class="flex items-center gap-3">
+                    <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">A</div>
+                    <div class="hidden sm:block">
+                        <p class="text-sm font-semibold text-gray-800 dark:text-white">Administrateur</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">CESEPEF</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main class="flex-1 overflow-y-auto p-6">
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="mb-4 rounded-lg px-4 py-3 text-sm {{ label == 'error' ? 'bg-red-50 text-red-600 dark:bg-red-950 dark:text-red-400' : 'bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300' }}">{{ message }}</div>
+                {% endfor %}
+            {% endfor %}
+            {% block admin_body %}{% endblock %}
+        </main>
+    </div>
+</div>
+</body>
+</html>

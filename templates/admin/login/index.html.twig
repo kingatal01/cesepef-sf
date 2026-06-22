@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Connexion — Administration CESEPEF</title>
+    <link rel="icon" href="{{ asset('images/favicon.png') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap">
+    <script>(function(){try{if(localStorage.getItem('theme')==='dark')document.documentElement.classList.add('dark');}catch(e){}})();</script>
+    {{ encore_entry_link_tags('app') }}
+    {{ encore_entry_script_tags('app') }}
+</head>
+<body class="bg-gray-50 dark:bg-gray-950">
+    <div class="flex min-h-screen items-center justify-center px-4">
+        <div class="w-full max-w-md">
+            <div class="mb-8 text-center">
+                <a href="{{ path('home') }}" class="inline-block">
+                    <img src="{{ asset('images/logo/logo-cesepef.jpg') }}" alt="CESEPEF" class="mx-auto h-14 w-auto">
+                </a>
+                <h1 class="mt-6 text-2xl font-bold text-gray-900 dark:text-white">Espace Administration</h1>
+                <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Connectez-vous pour gérer le contenu du site</p>
+            </div>
+
+            <div class="rounded-xl bg-white p-8 shadow-lg dark:bg-gray-900">
+                <form method="post" action="{{ path('admin_login') }}">
+                    {% if error %}
+                        <div class="mb-6 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600 dark:bg-red-950 dark:text-red-400">
+                            {{ error.messageKey|trans(error.messageData, 'security') }}
+                        </div>
+                    {% endif %}
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    <div class="mb-6">
+                        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Adresse email</label>
+                        <input type="email" name="email" value="{{ last_username|default('') }}" placeholder="admin@cesepef.org" class="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                    </div>
+                    <div class="mb-6">
+                        <div class="mb-2 flex items-center justify-between">
+                            <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Mot de passe</label>
+                            <a href="#" class="text-xs text-primary hover:underline">Mot de passe oublié ?</a>
+                        </div>
+                        <input type="password" name="password" placeholder="••••••••" class="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                    </div>
+                    <button type="submit" class="block w-full rounded-lg bg-primary py-3 text-center text-sm font-semibold text-white transition hover:bg-primary/90">Se connecter</button>
+                </form>
+            </div>
+
+            <p class="mt-6 text-center text-xs text-gray-400">© {{ "now"|date("Y") }} CESEPEF — Accès réservé aux administrateurs</p>
+        </div>
+    </div>
+</body>
+</html>

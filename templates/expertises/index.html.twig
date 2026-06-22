@@ -1,0 +1,129 @@
+{% extends 'base.html.twig' %}
+{% set title = "Nos Expertises | CESEPEF — Suivi & Évaluation, Études, Formation, Conseil" %}
+
+{% set expertises = [
+    {
+        num: '01',
+        title: 'Suivi & Évaluation (M&E / SERA)',
+        desc: "Le suivi-évaluation est la colonne vertébrale de la performance de tout projet. CESEPEF conçoit, implante et opère des dispositifs complets de Suivi-Évaluation, Redevabilité et Apprentissage (SERA), depuis la définition des indicateurs jusqu'à l'évaluation d'impact ex-post. Nous travaillons indistinctement sur des projets de développement, des programmes humanitaires et des initiatives de gouvernance.",
+        valeur: [
+            "Conception de cadres logiques et de théories du changement robustes, défendables devant les bailleurs",
+            "Évaluations indépendantes (ex-ante, mi-parcours, finales, ex-post) selon les six critères OCDE-CAD",
+            "Études d'impact rigoureuses (méthodes contrefactuelles, quasi-expérimentales)",
+            "Mise en place de systèmes de suivi en temps réel via KoboToolbox, ODK",
+            "Triangulation systématique des données quantitatives et qualitatives"
+        ],
+        outils: ['KoboToolbox', 'ODK', 'CommCare', 'R', 'Stata', 'SPSS', 'Power BI']
+    },
+    {
+        num: '02',
+        title: 'Études & Recherches Appliquées',
+        desc: "Nous produisons des études socio-économiques, sectorielles, de faisabilité et de marché qui éclairent les décisions stratégiques. De la collecte de données primaires sur le terrain à la modélisation économique, nos études combinent méthodes statistiques, enquêtes qualitatives et analyse contextuelle approfondie.",
+        valeur: [
+            "Études de faisabilité technico-économique de projets et infrastructures",
+            "Études de référence (baseline) et études d'impact environnemental et social (EIES)",
+            "Diagnostics territoriaux et études de filières porteuses",
+            "Enquêtes ménages, enquêtes établissements à grande échelle",
+            "Études qualitatives : focus groups, entretiens semi-directifs, analyse de récits",
+            "Cartographie des parties prenantes et analyse de risques"
+        ],
+        outils: ['R', 'Stata', 'SPSS', 'Python', 'ArcGIS', 'QGIS', 'Power BI', 'Tableau']
+    },
+    {
+        num: '03',
+        title: 'Formation & Renforcement de Capacités',
+        desc: "Une mission ne crée de l'impact durable que si elle laisse derrière elle des compétences renforcées. Nous concevons et déployons des dispositifs de formation sur mesure pour les administrations publiques, les ONG, les agences onusiennes et le secteur privé, en présentiel comme en e-learning.",
+        valeur: [
+            "Formations certifiantes en suivi-évaluation, GAR, cadre logique",
+            "Formation en gestion de projets et de programmes (cycle de projet, planification, budgétisation)",
+            "Formation en méthodologies de collecte et d'analyse de données",
+            "Renforcement institutionnel des ONG (gouvernance, redevabilité, mobilisation de ressources)",
+            "Coaching individualisé de cadres et chefs de projets",
+            "Élaboration de modules e-learning et de guides méthodologiques"
+        ],
+        outils: ['Présentiel', 'E-learning', 'Hybride', '2 jours à 4 semaines']
+    },
+    {
+        num: '04',
+        title: 'Conseil & Assistance Technique',
+        desc: "Nous accompagnons les institutions publiques, les ONG et les entreprises dans la structuration de leurs interventions, la mobilisation de financements et la mise en conformité avec les standards internationaux. Notre conseil est résolument opérationnel : nous co-construisons avec nos clients des solutions actionnables.",
+        valeur: [
+            "Élaboration de plans stratégiques institutionnels et de cadres de performance",
+            "Appui à la rédaction de propositions techniques et financières pour appels à projets",
+            "Conseil en mobilisation de ressources et structuration de partenariats",
+            "Développement institutionnel des ONG et associations",
+            "Développement d'outils numériques sur mesure (tableaux de bord, plateformes SERA)",
+            "Capitalisation et communication des résultats"
+        ],
+        outils: ['Plans stratégiques', 'Propositions techniques', 'Outils numériques']
+    }
+] %}
+
+{% block body %}
+    {# ── Breadcrumb ── #}
+    <section class="relative z-10 overflow-hidden pt-28 lg:pt-[150px]">
+        <div class="container">
+            <div class="-mx-4 flex flex-wrap items-center">
+                <div class="w-full px-4 md:w-8/12 lg:w-7/12">
+                    <div class="mb-8 max-w-[570px] md:mb-0 lg:mb-12">
+                        <h1 class="mb-5 text-2xl font-bold text-black dark:text-white sm:text-3xl">Nos Domaines d'Expertise</h1>
+                        <p class="text-base font-medium leading-relaxed text-body-color">Quatre piliers structurent notre offre. Chacun mobilise des méthodologies éprouvées, des outils numériques modernes et une équipe d'experts dédiée.</p>
+                    </div>
+                </div>
+                <div class="w-full px-4 md:w-4/12 lg:w-5/12">
+                    <div class="text-end">
+                        <ul class="flex items-center md:justify-end">
+                            <li class="flex items-center"><a href="{{ path('home') }}" class="pr-1 text-base font-medium text-body-color hover:text-primary">Accueil</a><span class="mr-3 block h-2 w-2 rotate-45 border-t-2 border-r-2 border-body-color"></span></li>
+                            <li class="text-base font-medium text-primary">Expertises</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="border-b border-body-color/[.15] pb-10 dark:border-white/[.15]"></div>
+    </section>
+
+    <section class="py-16 md:py-20 lg:py-28">
+        <div class="container">
+            <div class="space-y-16">
+                {% for exp in expertises %}
+                    <div class="-mx-4 flex flex-wrap items-start {{ loop.index0 is odd ? 'flex-row-reverse' : '' }}">
+                        <div class="w-full px-4 lg:w-1/3">
+                            <div class="sticky top-24">
+                                <span class="mb-2 block text-6xl font-extrabold text-primary/10">{{ exp.num }}</span>
+                                <h2 class="mb-4 text-2xl font-bold text-black dark:text-white sm:text-3xl">{{ exp.title }}</h2>
+                                <p class="mb-6 text-base leading-relaxed text-body-color dark:text-body-color-dark">{{ exp.desc }}</p>
+                                <div class="flex flex-wrap gap-2">
+                                    {% for o in exp.outils %}
+                                        <span class="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">{{ o }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-full px-4 lg:w-2/3">
+                            <div class="rounded-xs bg-white p-8 shadow-two dark:bg-gray-dark">
+                                <h3 class="mb-6 text-xl font-bold text-black dark:text-white">Notre valeur ajoutée</h3>
+                                <ul class="space-y-4">
+                                    {% for v in exp.valeur %}
+                                        <li class="flex items-start gap-3">
+                                            <span class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary text-white">
+                                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                            </span>
+                                            <span class="text-base text-body-color dark:text-body-color-dark">{{ v }}</span>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="mt-20 rounded-xs bg-primary p-10 text-center">
+                <h3 class="mb-4 text-2xl font-bold text-white">Vous avez un projet ?</h3>
+                <p class="mb-8 text-lg text-white/80">Contactez notre équipe pour discuter de votre besoin. Nous revenons vers vous sous 48 heures ouvrées.</p>
+                <a href="{{ path('contact') }}" class="inline-block rounded-xs bg-white px-8 py-4 text-base font-semibold text-primary transition hover:bg-white/90">Demander une proposition technique</a>
+            </div>
+        </div>
+    </section>
+{% endblock %}

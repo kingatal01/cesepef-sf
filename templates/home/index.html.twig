@@ -1,0 +1,336 @@
+{% extends 'base.html.twig' %}
+{% import _self as ui %}
+
+{% set title = "CESEPEF — Cabinet d'Expertise en Suivi & Évaluation, Études et Formations | Tchad" %}
+
+{# Titre de section réutilisable (auto-contenu, pas de fichier externe) #}
+{% macro section_title(t, p, center = false, width = '570px', mb = '100px') %}
+    <div class="w-full {{ center ? 'mx-auto text-center' : '' }}" style="max-width: {{ width }}; margin-bottom: {{ mb }};">
+        <h2 class="mb-4 text-3xl font-bold !leading-tight text-black dark:text-white sm:text-4xl md:text-[45px]">{{ t }}</h2>
+        <p class="text-base !leading-relaxed text-body-color md:text-lg">{{ p }}</p>
+    </div>
+{% endmacro %}
+
+{# partners, team, services, articles fournis par PublicController::home (depuis la BD) #}
+
+{% block body %}
+
+{# ════════════ HERO ════════════ #}
+<section id="home" class="relative z-10 overflow-hidden bg-white pb-16 pt-[120px] dark:bg-gray-dark md:pb-[120px] md:pt-[150px] xl:pb-[160px] xl:pt-[180px] 2xl:pb-[200px] 2xl:pt-[210px]">
+    <div class="container">
+        <div class="-mx-4 flex flex-wrap">
+            <div class="w-full px-4">
+                <div class="mx-auto max-w-[900px] text-center">
+                    <p class="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">N'Djamena – Tchad</p>
+                    <h1 class="mb-5 text-3xl font-bold leading-tight text-black dark:text-white sm:text-4xl sm:leading-tight md:text-5xl md:leading-tight">L'expertise au service de l'impact.</h1>
+                    <p class="mb-10 text-lg leading-relaxed text-body-color dark:text-body-color-dark sm:text-xl">Suivi &amp; évaluation, études, formation, conseil — une approche rigoureuse, des résultats mesurables.</p>
+                    <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
+                        <a href="{{ path('expertises') }}" class="rounded-xs bg-primary px-8 py-4 text-base font-semibold text-white duration-300 ease-in-out hover:bg-primary/80">Découvrir nos expertises</a>
+                        <a href="{{ path('contact') }}" class="rounded-xs border border-primary px-8 py-4 text-base font-semibold text-primary duration-300 ease-in-out hover:bg-primary hover:text-white dark:text-white dark:hover:text-white">Demander une proposition</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# ════════════ STATS ════════════ #}
+<section class="bg-primary py-12">
+    <div class="container">
+        <div class="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-6">
+            {% for s in [
+                { value: '50+', label: 'Projets & missions accompagnés' },
+                { value: '8+', label: "Pays d'intervention" },
+                { value: '20+', label: 'Experts mobilisables' },
+                { value: '60+', label: "Années d'expérience cumulée" },
+                { value: '8', label: "Secteurs d'intervention" },
+                { value: '95%', label: 'Taux de satisfaction client' }
+            ] %}
+                <div class="text-center">
+                    <p class="mb-1 text-3xl font-extrabold text-white lg:text-4xl">{{ s.value }}</p>
+                    <p class="text-sm font-medium text-white/80">{{ s.label }}</p>
+                </div>
+            {% endfor %}
+        </div>
+        <p class="mt-6 text-center text-xs text-white/60">Tchad • Mali • Niger • Sénégal • Burkina Faso • Côte d'Ivoire • RCA • Cameroun — Banque mondiale, BAD, UE, AFD, GIZ, BIT, FAO, UNICEF, PNUD…</p>
+    </div>
+</section>
+
+{# ════════════ FEATURES (Expertises) ════════════ #}
+<section id="expertises" class="py-16 md:py-20 lg:py-28">
+    <div class="container">
+        {{ ui.section_title("Nos Domaines d'Expertise", "Quatre piliers structurent notre offre. Chacun mobilise des méthodologies éprouvées, des outils numériques modernes et une équipe d'experts dédiée.", true) }}
+        <div class="grid grid-cols-1 gap-x-8 gap-y-14 md:grid-cols-2 lg:grid-cols-2">
+            {% for f in [
+                { title: 'Suivi & Évaluation (M&E / SERA)', paragraph: "Conception de cadres logiques, évaluations indépendantes (ex-ante, mi-parcours, finales) selon les six critères OCDE-CAD, études d'impact et systèmes SERA en temps réel via KoboToolbox et ODK." },
+                { title: 'Études & Recherches Appliquées', paragraph: "Études de faisabilité, diagnostics territoriaux, enquêtes ménages à grande échelle, études de filières, cartographie des parties prenantes et analyses de risques fondées sur des données fiables." },
+                { title: 'Formation & Renforcement de Capacités', paragraph: "Formations certifiantes en GAR, cadre logique, collecte mobile de données, analyse statistique (R, Stata, SPSS). Dispositifs sur mesure pour administrations, ONG, agences onusiennes, en présentiel ou e-learning." },
+                { title: 'Conseil & Assistance Technique', paragraph: "Plans stratégiques institutionnels, appui à la rédaction de propositions techniques pour appels d'offres, développement institutionnel des ONG, outils numériques sur mesure (tableaux de bord, plateformes SERA)." }
+            ] %}
+                <div class="w-full">
+                    <div>
+                        <div class="bg-primary/10 text-primary mb-10 flex h-[70px] w-[70px] items-center justify-center rounded-md">
+                            <svg width="40" height="40" viewBox="0 0 40 40" class="fill-current"><circle cx="20" cy="20" r="18" opacity="0.5"/><circle cx="20" cy="20" r="8"/></svg>
+                        </div>
+                        <h3 class="mb-5 text-xl font-bold text-black sm:text-2xl lg:text-xl xl:text-2xl dark:text-white">{{ f.title }}</h3>
+                        <p class="text-body-color pr-[10px] text-base leading-relaxed font-medium">{{ f.paragraph }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{# ════════════ BRANDS (Partenaires) ════════════ #}
+<section class="pt-16">
+    <div class="container">
+        {{ ui.section_title('Nos Partenaires & Bailleurs', "CESEPEF travaille avec les principaux bailleurs internationaux, agences onusiennes, États et institutions financières de développement.", true) }}
+    </div>
+    <div class="relative overflow-hidden bg-gray-light py-8 dark:bg-gray-dark">
+        <div class="pointer-events-none absolute left-0 top-0 z-10 h-full w-24 bg-linear-to-r from-gray-light to-transparent dark:from-gray-dark"></div>
+        <div class="pointer-events-none absolute right-0 top-0 z-10 h-full w-24 bg-linear-to-l from-gray-light to-transparent dark:from-gray-dark"></div>
+        <div class="flex w-max animate-marquee items-center gap-10">
+            {% for p in partners|merge(partners) %}
+                <div class="flex w-[140px] shrink-0 flex-col items-center gap-2">
+                    <div class="flex h-16 w-[120px] items-center justify-center overflow-hidden rounded-xs bg-white shadow-one dark:bg-gray-dark">
+                        {% if p.logo %}<img src="{{ p.logo }}" alt="{{ p.name }}" class="h-10 w-auto object-contain opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0">
+                        {% else %}<span class="px-2 text-center text-[11px] font-semibold leading-tight text-gray-400">{{ p.name }}</span>{% endif %}
+                    </div>
+                    <span class="text-center text-xs font-medium text-body-color dark:text-body-color-dark">{{ p.name }}</span>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{# ════════════ ABOUT SECTION ONE ════════════ #}
+<section id="about" class="pt-16 md:pt-20 lg:pt-28">
+    <div class="container">
+        <div class="border-b border-body-color/[.15] pb-16 dark:border-white/[.15] md:pb-20 lg:pb-28">
+            <div class="-mx-4 flex flex-wrap items-center">
+                <div class="w-full px-4 lg:w-1/2">
+                    {{ ui.section_title("Cabinet d'expertise indépendant basé à N'Djamena", "CESEPEF — Cabinet d'Expertise de Suivi & Évaluation de Projets, d'Études et de Formations — est un bureau d'études et de conseil de droit tchadien, fondé en octobre 2021. Notre raison d'être : combler le déficit d'expertise indépendante, rigoureuse et contextualisée en matière de suivi-évaluation, d'études et de renforcement des capacités.", false, '570px', '44px') }}
+                    <div class="mb-12 max-w-[570px] lg:mb-0">
+                        <div class="mx-[-12px] flex flex-wrap">
+                            {% for col in [
+                                ['Expertise nationale reconnue', 'Standards OCDE-CAD & GAR', "Indépendance d'analyse"],
+                                ["8+ pays d'intervention", 'Approche numérique & data', 'Livrables actionnables']
+                            ] %}
+                                <div class="w-full px-3 sm:w-1/2 lg:w-full xl:w-1/2">
+                                    {% for text in col %}
+                                        <p class="text-body-color mb-5 flex items-center text-lg font-medium">
+                                            <span class="bg-primary/10 text-primary mr-4 flex h-[30px] w-[30px] items-center justify-center rounded-md">
+                                                <svg width="16" height="13" viewBox="0 0 16 13" class="fill-current"><path d="M5.8535 12.6631C5.65824 12.8584 5.34166 12.8584 5.1464 12.6631L0.678505 8.1952C0.483242 7.99994 0.483242 7.68336 0.678505 7.4881L2.32921 5.83739C2.52467 5.64193 2.84166 5.64216 3.03684 5.83791L5.14622 7.95354C5.34147 8.14936 5.65859 8.14952 5.85403 7.95388L13.3797 0.420561C13.575 0.22513 13.8917 0.225051 14.087 0.420383L15.7381 2.07143C15.9333 2.26669 15.9333 2.58327 15.7381 2.77854L5.8535 12.6631Z"/></svg>
+                                            </span>{{ text }}
+                                        </p>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full px-4 lg:w-1/2">
+                    <div class="rounded-xs bg-primary/5 p-10 dark:bg-white/5">
+                        <h3 class="mb-6 text-2xl font-bold text-black dark:text-white">Notre positionnement</h3>
+                        <div class="mb-6">
+                            <h4 class="mb-2 text-lg font-semibold text-primary">Ancrage national — Tchad</h4>
+                            <p class="text-base text-body-color dark:text-body-color-dark">Connaissance fine du contexte politique, administratif et socio-économique tchadien, indispensable pour des analyses pertinentes et des recommandations applicables.</p>
+                        </div>
+                        <div class="mb-6">
+                            <h4 class="mb-2 text-lg font-semibold text-primary">Couverture régionale — Afrique centrale & Sahel</h4>
+                            <p class="text-base text-body-color dark:text-body-color-dark">Interventions démontrées au Mali, Niger, Burkina Faso, Sénégal, Côte d'Ivoire, Cameroun, RCA, à travers un réseau d'experts associés.</p>
+                        </div>
+                        <div>
+                            <h4 class="mb-2 text-lg font-semibold text-primary">Standards internationaux</h4>
+                            <p class="text-base text-body-color dark:text-body-color-dark">Alignement systématique sur les méthodologies OCDE-CAD, gestion axée sur les résultats (GAR), cadres logiques et théories du changement.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# ════════════ ABOUT SECTION TWO ════════════ #}
+<section class="py-16 md:py-20 lg:py-28">
+    <div class="container">
+        <div class="-mx-4 flex flex-wrap items-center">
+            <div class="w-full px-4 lg:w-1/2">
+                <div class="max-w-[470px]">
+                    <div class="mb-9">
+                        <h3 class="mb-4 text-xl font-bold text-black dark:text-white sm:text-2xl lg:text-xl xl:text-2xl">Notre vision</h3>
+                        <p class="text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed">Devenir le cabinet d'expertise de référence en Afrique centrale et au Sahel pour le suivi-évaluation, les études stratégiques et le renforcement des capacités, reconnu pour la rigueur de ses méthodes, l'indépendance de ses analyses et la valeur qu'il crée pour les décideurs et les populations.</p>
+                    </div>
+                    <div class="mb-9">
+                        <h3 class="mb-4 text-xl font-bold text-black dark:text-white sm:text-2xl lg:text-xl xl:text-2xl">Notre mission</h3>
+                        <p class="text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed">Accompagner les gouvernements, les bailleurs internationaux, les agences onusiennes, les ONG et les acteurs privés dans la conception, le pilotage et l'évaluation de projets à fort impact. Notre mission ultime : transformer la donnée en décision, et la décision en impact mesurable pour les populations.</p>
+                    </div>
+                    <div class="mb-1">
+                        <h3 class="mb-4 text-xl font-bold text-black dark:text-white sm:text-2xl lg:text-xl xl:text-2xl">Nos secteurs d'intervention</h3>
+                        <p class="text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed">Santé, éducation, agriculture, sécurité alimentaire, environnement, emploi & formation professionnelle, gouvernance, action humanitaire.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full px-4 lg:w-1/2">
+                <div class="rounded-xs bg-primary/5 p-10 dark:bg-white/5">
+                    <h3 class="mb-6 text-2xl font-bold text-black dark:text-white">Nos valeurs fondatrices</h3>
+                    {% for val in [
+                        { title: 'Rigueur méthodologique', desc: 'Standards OCDE-CAD, GAR, ISO 20252 — protocoles transparents et reproductibles.' },
+                        { title: 'Indépendance', desc: 'Évaluations conduites en toute indépendance vis-à-vis des opérateurs des projets.' },
+                        { title: 'Intégrité & éthique', desc: 'Confidentialité, protection des données, consentement éclairé — principes non négociables.' },
+                        { title: 'Excellence du livrable', desc: 'Chaque rapport soumis à un contrôle qualité interne avant remise au client.' },
+                        { title: 'Ancrage local & terrain', desc: "Maîtrise des langues, codes culturels et réalités opérationnelles des zones d'intervention." },
+                        { title: 'Innovation & numérique', desc: 'KoboToolbox, ODK, R, Stata, SPSS, Power BI — des données plus rapides, fiables et utiles.' }
+                    ] %}
+                        <div class="mb-4 flex items-start">
+                            <span class="bg-primary/10 text-primary mr-3 mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold">{{ loop.index }}</span>
+                            <div>
+                                <span class="font-semibold text-black dark:text-white">{{ val.title }} : </span>
+                                <span class="text-body-color dark:text-body-color-dark">{{ val.desc }}</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# ════════════ TEAM (Équipe) ════════════ #}
+<section class="py-16 md:py-20 lg:py-28">
+    <div class="container">
+        {{ ui.section_title('Notre Équipe', "CESEPEF réunit une équipe de cadres seniors et d'experts pluridisciplinaires totalisant plus de 60 années d'expérience cumulée au sein d'institutions publiques, d'organisations internationales et de bureaux d'études.", true) }}
+        <div class="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
+            {% for m in team %}
+                <div class="rounded-xs bg-white p-6 text-center shadow-two transition hover:shadow-lg dark:bg-gray-dark">
+                    <div class="mx-auto mb-4 h-24 w-24 overflow-hidden rounded-full ring-2 ring-primary/20">
+                        {% if m.photo %}<img src="{{ m.photo }}" alt="{{ m.name }}" class="h-full w-full object-cover">
+                        {% else %}<div class="flex h-full w-full items-center justify-center bg-primary/10 text-2xl font-bold text-primary">{{ m.name|first }}</div>{% endif %}
+                    </div>
+                    <h4 class="mb-1 text-sm font-bold leading-snug text-black dark:text-white">{{ m.name }}</h4>
+                    <p class="mb-3 text-xs text-body-color dark:text-body-color-dark">{{ m.role }}</p>
+                    {% if m.department %}<p class="mb-3 text-[11px] font-medium text-primary/70">{{ m.department }}</p>{% endif %}
+                    {% if m.linkedin %}<a href="{{ m.linkedin }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de {{ m.name }}" class="inline-flex items-center justify-center rounded-full bg-primary/10 p-2 text-primary transition hover:bg-primary hover:text-white"><svg width="15" height="15" viewBox="0 0 17 16" class="fill-current"><path d="M15.2196 0H1.99991C1.37516 0 0.875366 0.497491 0.875366 1.11936V14.3029C0.875366 14.8999 1.37516 15.4222 1.99991 15.4222H15.1696C15.7943 15.4222 16.2941 14.9247 16.2941 14.3029V1.09448C16.3441 0.497491 15.8443 0 15.2196 0ZM5.44852 13.1089H3.17444V5.7709H5.44852V13.1089ZM4.29899 4.75104C3.54929 4.75104 2.97452 4.15405 2.97452 3.43269C2.97452 2.71133 3.57428 2.11434 4.29899 2.11434C5.02369 2.11434 5.62345 2.71133 5.62345 3.43269C5.62345 4.15405 5.07367 4.75104 4.29899 4.75104ZM14.07 13.1089H11.796V9.55183C11.796 8.7061 11.771 7.58674 10.5964 7.58674C9.39693 7.58674 9.222 8.53198 9.222 9.47721V13.1089H6.94792V5.7709H9.17202V6.79076H9.19701C9.52188 6.19377 10.2466 5.59678 11.3711 5.59678C13.6952 5.59678 14.12 7.08925 14.12 9.12897V13.1089H14.07Z"/></svg></a>{% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{# ════════════ TESTIMONIALS (Avantages) ════════════ #}
+{% set avantages = [
+    { num: '01', title: 'Expertise nationale alignée sur les standards internationaux', desc: "Notre équipe combine une connaissance fine du contexte tchadien et sahélien avec une maîtrise des cadres méthodologiques OCDE-CAD, GAR, ISO 20252. Nos livrables passent sans friction les exigences de qualité des principaux bailleurs." },
+    { num: '02', title: "Véritable indépendance d'analyse", desc: "Cabinet privé indépendant, sans conflit d'intérêt avec les opérateurs des projets que nous évaluons. Cette indépendance est notre actif le plus précieux ; elle garantit la valeur et la défendabilité de nos conclusions." },
+    { num: '03', title: 'Mobilisation rapide sur la zone Afrique centrale & Sahel', desc: "Réseau d'enquêteurs et de superviseurs déjà déployés et formés dans plusieurs régions du Tchad et des pays voisins. Nous démarrons une collecte terrain en quelques jours, là où d'autres prennent des semaines." },
+    { num: '04', title: 'Approche résolument numérique et data-driven', desc: "Collecte mobile (KoboToolbox, ODK, CommCare), analyses statistiques avancées (R, Stata, SPSS, Python), tableaux de bord interactifs (Power BI, Tableau), géoréférencement systématique. Nous livrons des données exploitables, pas seulement des PDF." },
+    { num: '05', title: 'Rigueur méthodologique documentée', desc: "Chaque mission s'appuie sur un protocole méthodologique écrit, validé par le conseil scientifique avant remise au client. Nos plans d'enquête, guides d'entretien et protocoles d'analyse sont reproductibles et auditables." },
+    { num: '06', title: 'Équipe pluridisciplinaire de seniors expérimentés', desc: "Plus de 60 années d'expérience cumulée au sein de l'équipe dirigeante, capitalisées dans des institutions de référence : Banque mondiale, BAD, Système des Nations Unies, GIZ, AFD, BIT." },
+    { num: '07', title: 'Recommandations actionnables garanties', desc: "Nous refusons les recommandations creuses ou irréalistes. Chaque recommandation est argumentée, hiérarchisée par priorité, chiffrée lorsque pertinent et associée à un porteur potentiel. Nos clients utilisent réellement ce que nous produisons." }
+] %}
+<section class="dark:bg-bg-color-dark bg-gray-light relative z-10 py-16 md:py-20 lg:py-28">
+    <div class="container">
+        {{ ui.section_title('Pourquoi choisir CESEPEF ?', "Dans un marché de plus en plus concurrentiel, CESEPEF se distingue par sept avantages compétitifs forts qui en font un partenaire de confiance pour les commanditaires les plus exigeants.", true) }}
+        <div class="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2 lg:grid-cols-3">
+            {% for a in avantages[0:6] %}
+                <div class="rounded-xs bg-white p-8 shadow-two dark:bg-gray-dark dark:shadow-three">
+                    <span class="mb-4 inline-block text-4xl font-extrabold text-primary/20">{{ a.num }}</span>
+                    <h3 class="mb-3 text-lg font-bold text-black dark:text-white">{{ a.title }}</h3>
+                    <p class="text-base text-body-color dark:text-body-color-dark">{{ a.desc }}</p>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="mt-6">
+            <div class="rounded-xs bg-primary p-8 shadow-two">
+                <span class="mb-4 inline-block text-4xl font-extrabold text-white/30">{{ avantages[6].num }}</span>
+                <h3 class="mb-3 text-xl font-bold text-white">{{ avantages[6].title }}</h3>
+                <p class="text-base text-white/80">{{ avantages[6].desc }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# ════════════ PRICING (Offres) ════════════ #}
+{% set svcCount = services|length %}
+{% set mainServices = svcCount > 1 ? services[0:svcCount - 1] : services %}
+{% set lastService = svcCount > 1 ? services|last : null %}
+<section id="services" class="relative z-10 py-16 md:py-20 lg:py-28">
+    <div class="container">
+        {{ ui.section_title('Nos Offres de Services', "Des offres modulaires et adaptables, conçues pour répondre précisément aux besoins de nos clients. Chaque offre est livrée avec un cahier des charges clair, un calendrier précis et des indicateurs de performance contractuels.", true, '760px') }}
+        <div class="grid grid-cols-1 items-center gap-x-8 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
+            {% for offre in mainServices %}
+                <div class="relative overflow-hidden rounded-xs p-8 shadow-two transition-transform duration-300 {{ offre.highlight ? 'scale-105 bg-primary text-white shadow-lg ring-2 ring-primary/30 lg:-my-4' : 'bg-white hover:scale-[1.02] dark:bg-gray-dark' }}">
+                    {% if offre.highlight %}<span class="absolute right-4 top-4 rounded-full bg-white/20 px-3 py-1 text-xs font-semibold text-white">Populaire</span>{% endif %}
+                    <h3 class="mb-2 text-xl font-bold {{ offre.highlight ? 'text-white' : 'text-black dark:text-white' }}">{{ offre.title }}</h3>
+                    {% if offre.cible %}<p class="mb-4 text-sm font-medium {{ offre.highlight ? 'text-white/80' : 'text-primary' }}">Pour : {{ offre.cible }}</p>{% endif %}
+                    <p class="mb-6 text-sm leading-relaxed {{ offre.highlight ? 'text-white/90' : 'text-body-color dark:text-body-color-dark' }}">{{ offre.description }}</p>
+                    {% if offre.livrables|length %}
+                        <ul class="mb-6 space-y-2">
+                            {% for l in offre.livrables %}
+                                <li class="flex items-center gap-2 text-sm">
+                                    <svg class="shrink-0 {{ offre.highlight ? 'text-white' : 'text-primary' }}" width="14" height="11" viewBox="0 0 16 13" fill="currentColor"><path d="M5.8535 12.6631C5.65824 12.8584 5.34166 12.8584 5.1464 12.6631L0.678505 8.1952C0.483242 7.99994 0.483242 7.68336 0.678505 7.4881L2.32921 5.83739C2.52467 5.64193 2.84166 5.64216 3.03684 5.83791L5.14622 7.95354C5.34147 8.14936 5.65859 8.14952 5.85403 7.95388L13.3797 0.420561C13.575 0.22513 13.8917 0.225051 14.087 0.420383L15.7381 2.07143C15.9333 2.26669 15.9333 2.58327 15.7381 2.77854L5.8535 12.6631Z"/></svg>
+                                    <span class="{{ offre.highlight ? 'text-white/90' : 'text-body-color dark:text-body-color-dark' }}">{{ l }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    {% if offre.delai %}<div class="mb-6 text-xs font-medium {{ offre.highlight ? 'text-white/70' : 'text-body-color' }}">Délai indicatif : {{ offre.delai }}</div>{% endif %}
+                    <a href="{{ path('contact') }}" class="block w-full rounded-xs py-3 text-center text-sm font-semibold transition {{ offre.highlight ? 'bg-white text-primary hover:bg-white/90' : 'bg-primary text-white hover:bg-primary/90' }}">Demander un devis</a>
+                </div>
+            {% endfor %}
+        </div>
+        {% if lastService %}
+        <div class="mt-10 rounded-xs bg-gray-light p-8 dark:bg-gray-dark">
+            <div class="-mx-4 flex flex-wrap items-center">
+                <div class="w-full px-4 lg:w-2/3">
+                    <h3 class="mb-2 text-xl font-bold text-black dark:text-white">{{ lastService.title }}</h3>
+                    {% if lastService.cible %}<p class="mb-1 text-sm font-medium text-primary">Pour : {{ lastService.cible }}</p>{% endif %}
+                    <p class="text-body-color dark:text-body-color-dark">{{ lastService.description }}</p>
+                </div>
+                <div class="w-full px-4 lg:w-1/3">
+                    <a href="{{ path('contact') }}" class="mt-4 block w-full rounded-xs bg-primary py-4 text-center text-base font-semibold text-white transition hover:bg-primary/90 lg:mt-0">Nous contacter</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+{# ════════════ BLOG (depuis la BD) ════════════ #}
+{% if articles is not empty %}
+<section id="blog" class="bg-gray-light dark:bg-bg-color-dark py-16 md:py-20 lg:py-28">
+    <div class="container">
+        {{ ui.section_title('Blog', "Notes méthodologiques, analyses sectorielles et ressources pratiques pour les professionnels du suivi-évaluation et du développement en Afrique centrale et au Sahel.", true) }}
+        <div class="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2 xl:grid-cols-3">
+            {% for article in articles %}
+                {% set tag = article.tags ? article.tags|first : article.category %}
+                <div class="group relative overflow-hidden rounded-xs bg-white shadow-one duration-300 hover:shadow-two dark:bg-dark">
+                    <a href="{{ path('blog_detail', {slug: article.slug}) }}" class="relative block aspect-[37/22] w-full overflow-hidden">
+                        {% if tag %}<span class="absolute right-6 top-6 z-20 inline-flex items-center justify-center rounded-full bg-primary px-4 py-2 text-sm font-semibold capitalize text-white">{{ tag }}</span>{% endif %}
+                        {% if article.coverImage %}<img src="{{ article.coverImage }}" alt="{{ article.title }}" class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
+                        {% else %}<div class="flex h-full w-full items-center justify-center bg-primary/10"><span class="text-4xl font-bold text-primary/20">{{ article.title|first }}</span></div>{% endif %}
+                    </a>
+                    <div class="p-6 sm:p-8">
+                        <h3><a href="{{ path('blog_detail', {slug: article.slug}) }}" class="mb-4 block text-xl font-bold text-black hover:text-primary dark:text-white dark:hover:text-primary sm:text-2xl">{{ article.title }}</a></h3>
+                        <p class="mb-6 border-b border-body-color/10 pb-6 text-base font-medium text-body-color dark:border-white/10">{{ article.excerpt ?: article.content|slice(0, 120) ~ '…' }}</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-body-color dark:text-body-color-dark">{{ article.author }}</span>
+                            <span class="text-xs text-body-color dark:text-body-color-dark">{{ article.publishedAt ? article.publishedAt|date('d/m/Y') : '' }}</span>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="mt-10 text-center">
+            <a href="{{ path('blog') }}" class="inline-flex items-center gap-2 rounded-xs border border-primary px-6 py-3 text-sm font-semibold text-primary transition hover:bg-primary hover:text-white">Voir toutes les publications →</a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{# ════════════ CONTACT ════════════ #}
+{{ include('contact/_form.html.twig') }}
+
+{# ════════════ MAP ════════════ #}
+{{ include('contact/_map.html.twig') }}
+
+{% endblock %}
