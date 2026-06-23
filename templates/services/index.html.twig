@@ -2,56 +2,80 @@
 {% set title = "Services — CESEPEF" %}
 
 {% block body %}
-    <section class="relative z-10 overflow-hidden pt-28 lg:pt-[150px]">
-        <div class="container">
-            <div class="-mx-4 flex flex-wrap items-center">
-                <div class="w-full px-4 md:w-8/12 lg:w-7/12">
-                    <div class="mb-8 max-w-[570px] md:mb-0 lg:mb-12">
-                        <h1 class="mb-5 text-2xl font-bold text-black dark:text-white sm:text-3xl">Nos Services</h1>
-                        <p class="text-base font-medium leading-relaxed text-body-color">Des offres modulaires et adaptables, conçues pour répondre précisément aux besoins de nos clients. Chaque offre est livrée avec un cahier des charges clair, un calendrier précis et des indicateurs de performance contractuels.</p>
-                    </div>
+<section class="relative z-10 overflow-hidden pt-28 lg:pt-[150px]">
+    <div class="container">
+        <div class="-mx-4 flex flex-wrap items-center">
+            <div class="w-full px-4 md:w-8/12 lg:w-7/12">
+                <div class="mb-8 max-w-[570px] md:mb-0 lg:mb-12">
+                    <h1 class="mb-5 text-2xl font-bold text-black dark:text-white sm:text-3xl">Nos Services</h1>
+                    <p class="text-base font-medium leading-relaxed text-body-color">Des offres modulaires et
+                        adaptables, conçues pour répondre précisément aux besoins de nos clients. Chaque offre est
+                        livrée avec un cahier des charges clair, un calendrier précis et des indicateurs de performance
+                        contractuels.</p>
                 </div>
-                <div class="w-full px-4 md:w-4/12 lg:w-5/12">
-                    <div class="text-end">
-                        <ul class="flex items-center md:justify-end">
-                            <li class="flex items-center"><a href="{{ path('home') }}" class="pr-1 text-base font-medium text-body-color hover:text-primary">Accueil</a><span class="mr-3 block h-2 w-2 rotate-45 border-t-2 border-r-2 border-body-color"></span></li>
-                            <li class="text-base font-medium text-primary">Services</li>
-                        </ul>
-                    </div>
+            </div>
+            <div class="w-full px-4 md:w-4/12 lg:w-5/12">
+                <div class="text-end">
+                    <ul class="flex items-center md:justify-end">
+                        <li class="flex items-center"><a href="{{ path('home') }}"
+                                class="pr-1 text-base font-medium text-body-color hover:text-primary">Accueil</a><span
+                                class="mr-3 block h-2 w-2 rotate-45 border-t-2 border-r-2 border-body-color"></span>
+                        </li>
+                        <li class="text-base font-medium text-primary">Services</li>
+                    </ul>
                 </div>
             </div>
         </div>
-        <div class="border-b border-body-color/[.15] pb-10 dark:border-white/[.15]"></div>
-    </section>
+    </div>
+    <div class="border-b border-body-color/[.15] pb-10 dark:border-white/[.15]"></div>
+</section>
 
-    <section class="py-16 md:py-20 lg:py-28">
-        <div class="container">
-            {% if services is empty %}
-                <p class="text-center text-body-color">Nos offres seront publiées prochainement.</p>
-            {% else %}
-                <div class="grid grid-cols-1 items-stretch gap-x-8 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
-                    {% for offre in services %}
-                        <div class="relative flex flex-col overflow-hidden rounded-xs p-8 shadow-two transition-transform duration-300 {{ offre.highlight ? 'bg-primary text-white shadow-lg ring-2 ring-primary/30' : 'bg-white hover:scale-[1.02] dark:bg-gray-dark' }}">
-                            {% if offre.highlight %}<span class="absolute right-4 top-4 rounded-full bg-white/20 px-3 py-1 text-xs font-semibold text-white">Populaire</span>{% endif %}
-                            <h3 class="mb-2 text-xl font-bold {{ offre.highlight ? 'text-white' : 'text-black dark:text-white' }}">{{ offre.title }}</h3>
-                            {% if offre.cible %}<p class="mb-4 text-sm font-medium {{ offre.highlight ? 'text-white/80' : 'text-primary' }}">Pour : {{ offre.cible }}</p>{% endif %}
-                            <p class="mb-6 text-sm leading-relaxed {{ offre.highlight ? 'text-white/90' : 'text-body-color dark:text-body-color-dark' }}">{{ offre.description }}</p>
-                            {% if offre.livrables|length %}
-                                <ul class="mb-6 space-y-2">
-                                    {% for l in offre.livrables %}
-                                        <li class="flex items-center gap-2 text-sm">
-                                            <svg class="shrink-0 {{ offre.highlight ? 'text-white' : 'text-primary' }}" width="14" height="11" viewBox="0 0 16 13" fill="currentColor"><path d="M5.8535 12.6631C5.65824 12.8584 5.34166 12.8584 5.1464 12.6631L0.678505 8.1952C0.483242 7.99994 0.483242 7.68336 0.678505 7.4881L2.32921 5.83739C2.52467 5.64193 2.84166 5.64216 3.03684 5.83791L5.14622 7.95354C5.34147 8.14936 5.65859 8.14952 5.85403 7.95388L13.3797 0.420561C13.575 0.22513 13.8917 0.225051 14.087 0.420383L15.7381 2.07143C15.9333 2.26669 15.9333 2.58327 15.7381 2.77854L5.8535 12.6631Z"/></svg>
-                                            <span class="{{ offre.highlight ? 'text-white/90' : 'text-body-color dark:text-body-color-dark' }}">{{ l }}</span>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
-                            {% if offre.delai %}<div class="mb-6 text-xs font-medium {{ offre.highlight ? 'text-white/70' : 'text-body-color' }}">Délai indicatif : {{ offre.delai }}</div>{% endif %}
-                            <a href="{{ path('contact') }}" class="mt-auto block w-full rounded-xs py-3 text-center text-sm font-semibold transition {{ offre.highlight ? 'bg-white text-primary hover:bg-white/90' : 'bg-primary text-white hover:bg-primary/90' }}">Demander un devis</a>
-                        </div>
+<section class="py-16 md:py-20 lg:py-28">
+    <div class="container">
+        {% if services is empty %}
+        <p class="text-center text-body-color">Nos offres seront publiées prochainement.</p>
+        {% else %}
+        <div class="grid grid-cols-1 items-stretch gap-x-8 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
+            {% for offre in services %}
+            <div
+                class="relative flex flex-col overflow-hidden rounded-xs p-8 shadow-two transition-transform duration-300 {{ offre.highlight ? 'bg-primary text-white shadow-lg ring-2 ring-primary/30' : 'bg-white hover:scale-[1.02] dark:bg-gray-dark' }}">
+                {% if offre.highlight %}<span
+                    class="absolute right-4 top-4 rounded-full bg-white/20 px-3 py-1 text-xs font-semibold text-white">Populaire</span>{%
+                endif %}
+                <h3 class="mb-2 text-xl font-bold {{ offre.highlight ? 'text-white' : 'text-black dark:text-white' }}">
+                    {{ offre.title }}</h3>
+                {% if offre.cible %}<p
+                    class="mb-4 text-sm font-medium {{ offre.highlight ? 'text-white/80' : 'text-primary' }}">Pour : {{
+                    offre.cible }}</p>{% endif %}
+                <p
+                    class="mb-6 text-sm leading-relaxed {{ offre.highlight ? 'text-white/90' : 'text-body-color dark:text-body-color-dark' }}">
+                    {{ offre.description }}</p>
+                {% if offre.livrables|length %}
+                <ul class="mb-6 space-y-2">
+                    {% for l in offre.livrables %}
+                    <li class="flex items-center gap-2 text-sm">
+                        <svg class="shrink-0 {{ offre.highlight ? 'text-white' : 'text-primary' }}" width="14"
+                            height="11" viewBox="0 0 16 13" fill="currentColor">
+                            <path
+                                d="M5.8535 12.6631C5.65824 12.8584 5.34166 12.8584 5.1464 12.6631L0.678505 8.1952C0.483242 7.99994 0.483242 7.68336 0.678505 7.4881L2.32921 5.83739C2.52467 5.64193 2.84166 5.64216 3.03684 5.83791L5.14622 7.95354C5.34147 8.14936 5.65859 8.14952 5.85403 7.95388L13.3797 0.420561C13.575 0.22513 13.8917 0.225051 14.087 0.420383L15.7381 2.07143C15.9333 2.26669 15.9333 2.58327 15.7381 2.77854L5.8535 12.6631Z" />
+                        </svg>
+                        <span
+                            class="{{ offre.highlight ? 'text-white/90' : 'text-body-color dark:text-body-color-dark' }}">{{
+                            l }}</span>
+                    </li>
                     {% endfor %}
-                </div>
-            {% endif %}
+                </ul>
+                {% endif %}
+                {% if offre.delai %}<div
+                    class="mb-6 text-xs font-medium {{ offre.highlight ? 'text-white/70' : 'text-body-color' }}">Délai
+                    indicatif : {{ offre.delai }}</div>{% endif %}
+                <a href="{{ path('contact') }}"
+                    class="mt-auto block w-full rounded-xs py-3 text-center text-sm font-semibold transition {{ offre.highlight ? 'bg-white text-primary hover:bg-white/90' : 'bg-primary text-white hover:bg-primary/90' }}">Demander
+                    un devis</a>
+            </div>
+            {% endfor %}
         </div>
-    </section>
+        {% endif %}
+    </div>
+</section>
 {% endblock %}

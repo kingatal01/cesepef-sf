@@ -84,7 +84,7 @@ class SeedCommand extends Command
             ['Banque Mondiale', 'Multilatéral', 1],
             ['Banque Africaine de Développement', 'Multilatéral', 2],
             ['Union Européenne', 'Bilatéral', 3],
-            ['AFD — Agence Française de Développement', 'Bilatéral', 4],
+            ['AFD (Agence Française de Développement)', 'Bilatéral', 4],
             ['GIZ', 'Bilatéral', 5],
             ['UNICEF', 'Nations Unies', 6],
             ['PNUD', 'Nations Unies', 7],

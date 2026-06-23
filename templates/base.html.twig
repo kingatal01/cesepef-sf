@@ -1,163 +1,228 @@
 <!DOCTYPE html>
 <html lang="fr" class="scroll-smooth">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{% block title %}{{ title|default("CESEPEF — Cabinet d'Expertise Tchad") }}{% endblock %}</title>
-        <meta name="description" content="{% block meta_description %}Cabinet d'Expertise de Suivi & Évaluation de Projets, d'Études et de Formations. N'Djamena, Tchad.{% endblock %}">
-        <link rel="icon" href="{{ asset('images/favicon.png') }}">
 
-        {# Police Inter — chargée via <link> (et non @import CSS, que css-loader corromprait) #}
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{{ title|default("CESEPEF, Cabinet d'Expertise Tchad") }}{% endblock %}</title>
+    <meta name="description"
+        content="{% block meta_description %}Cabinet d'Expertise de Suivi & Évaluation de Projets, d'Études et de Formations. N'Djamena, Tchad.{% endblock %}">
+    {# <link rel="icon" href="{{ asset('images/favicon.png') }}"> #}
 
-        {# Anti-flash : applique le thème avant le rendu #}
-        <script>
-            (function () {
-                try {
-                    if (localStorage.getItem('theme') === 'dark') {
-                        document.documentElement.classList.add('dark');
-                    }
-                } catch (e) {}
-            })();
-        </script>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
 
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
+    {# Police Inter — chargée via
+    <link> (et non @import CSS, que css-loader corromprait) #}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap">
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
-    </head>
-    <body class="bg-[#FCFCFC] dark:bg-black">
-        <div class="isolate">
-            {# ════════════ HEADER ════════════ #}
-            {% set current = app.request.attributes.get('_route') %}
-            {% set menu = [
-                { title: 'Accueil',      route: 'home' },
-                { title: 'À propos',     route: 'about' },
-                { title: 'Expertises',   route: 'expertises' },
-                { title: 'Services',     route: 'services' },
-                { title: 'Réalisations', route: 'realisations' },
-                { title: 'Blog',         route: 'blog' }
-            ] %}
-            <header data-controller="navbar" data-navbar-target="header" class="header top-0 left-0 z-40 flex w-full items-center absolute bg-transparent">
-                <div class="container">
-                    <div class="relative -mx-4 flex items-center justify-between">
-                        <div class="w-60 max-w-full px-4 xl:mr-12">
-                            <a href="{{ path('home') }}" data-navbar-target="logo" class="header-logo block w-full py-8">
-                                <img src="{{ asset('images/logo/logo-cesepef.jpg') }}" alt="CESEPEF" width="160" height="60" class="h-auto max-h-[50px] w-auto">
-                            </a>
-                        </div>
-                        <div class="flex w-full items-center justify-between px-4">
-                            <div>
-                                <button data-action="navbar#toggle" aria-label="Menu mobile" class="ring-primary absolute top-1/2 right-4 block translate-y-[-50%] rounded-lg px-3 py-[6px] focus:ring-2 lg:hidden">
-                                    <span data-navbar-target="bar1" class="relative my-1.5 block h-0.5 w-[30px] bg-black transition-all duration-300 dark:bg-white"></span>
-                                    <span data-navbar-target="bar2" class="relative my-1.5 block h-0.5 w-[30px] bg-black transition-all duration-300 dark:bg-white"></span>
-                                    <span data-navbar-target="bar3" class="relative my-1.5 block h-0.5 w-[30px] bg-black transition-all duration-300 dark:bg-white"></span>
-                                </button>
-                                <nav data-navbar-target="menu" class="navbar border-body-color/50 dark:border-body-color/20 dark:bg-dark absolute right-0 z-30 w-[250px] rounded border-[.5px] bg-white px-6 py-4 duration-300 lg:visible lg:static lg:w-auto lg:border-none lg:!bg-transparent lg:p-0 lg:opacity-100 invisible top-[120%] opacity-0">
-                                    <ul class="block lg:flex lg:space-x-12">
-                                        {% for item in menu %}
-                                            <li class="group relative">
-                                                <a href="{{ path(item.route) }}" class="flex py-2 text-base lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 {{ current == item.route ? 'text-primary dark:text-white' : 'text-dark hover:text-primary dark:text-white/70 dark:hover:text-white' }}">{{ item.title }}</a>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </nav>
-                            </div>
-                            <div class="flex items-center justify-end pr-16 lg:pr-0">
-                                <a href="{{ path('contact') }}" class="ease-in-up shadow-btn hover:shadow-btn-hover bg-primary hover:bg-primary/90 hidden rounded-xs px-8 py-3 text-base font-medium text-white transition duration-300 md:block md:px-9 lg:px-6 xl:px-9">Contact</a>
-                                <button data-controller="theme-toggle" data-action="theme-toggle#toggle" aria-label="Basculer le thème" class="flex items-center justify-center text-black rounded-full cursor-pointer bg-gray-2 dark:bg-dark-bg h-9 w-9 dark:text-white md:h-14 md:w-14">
-                                    <svg viewBox="0 0 23 23" class="w-5 h-5 stroke-current dark:hidden md:h-6 md:w-6" fill="none">
-                                        <path d="M9.55078 1.5C5.80078 1.5 1.30078 5.25 1.30078 11.25C1.30078 17.25 5.80078 21.75 11.8008 21.75C17.8008 21.75 21.5508 17.25 21.5508 13.5C13.3008 18.75 4.30078 9.75 9.55078 1.5Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                    </svg>
-                                    <svg viewBox="0 0 25 24" fill="none" class="hidden w-5 h-5 dark:block md:h-6 md:w-6">
-                                        <path d="M12.0508 16.5C10.8573 16.5 9.71271 16.0259 8.8688 15.182C8.02489 14.3381 7.55078 13.1935 7.55078 12C7.55078 10.8065 8.02489 9.66193 8.8688 8.81802C9.71271 7.97411 10.8573 7.5 12.0508 7.5C13.2443 7.5 14.3888 7.97411 15.2328 8.81802C16.0767 9.66193 16.5508 10.8065 16.5508 12C16.5508 13.1935 16.0767 14.3381 15.2328 15.182C14.3888 16.0259 13.2443 16.5 12.0508 16.5ZM12.0508 0C12.4650 0 12.8008 0.335786 12.8008 0.75V3.75C12.8008 4.16421 12.465 4.5 12.0508 4.5C11.6366 4.5 11.3008 4.16421 11.3008 3.75V0.75C11.3008 0.335786 11.6366 0 12.0508 0ZM12.0508 19.5C12.465 19.5 12.8008 19.8358 12.8008 20.25V23.25C12.8008 23.6642 12.465 24 12.0508 24C11.6366 24 11.3008 23.6642 11.3008 23.25V20.25C11.3008 19.8358 11.6366 19.5 12.0508 19.5ZM24.0508 12C24.0508 12.4142 23.715 12.75 23.3008 12.75H20.3008C19.8866 12.75 19.5508 12.4142 19.5508 12C19.5508 11.5858 19.8866 11.25 20.3008 11.25H23.3008C23.715 11.25 24.0508 11.5858 24.0508 12ZM4.55078 12C4.55078 12.4142 4.21499 12.75 3.80078 12.75H0.800781C0.386567 12.75 0.0507812 12.4142 0.0507812 12C0.0507812 11.5858 0.386567 11.25 0.800781 11.25H3.80078C4.21499 11.25 4.55078 11.5858 4.55078 12Z" fill="currentColor"></path>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
+    {# Anti-flash : applique le thème avant le rendu #}
+    <script>
+        (function () {
+            try {
+                if (localStorage.getItem('theme') === 'dark') {
+                    document.documentElement.classList.add('dark');
+                }
+            } catch (e) { }
+        })();
+    </script>
+
+    {% block stylesheets %}
+    {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+    {% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+</head>
+
+<body class="bg-[#FCFCFC] dark:bg-black">
+    <div class="isolate">
+        {# ════════════ HEADER ════════════ #}
+        {% set current = app.request.attributes.get('_route') %}
+        {% set menu = [
+        { title: 'Accueil', route: 'home' },
+        { title: 'À propos', route: 'about' },
+        { title: 'Expertises', route: 'expertises' },
+        { title: 'Services', route: 'services' },
+        { title: 'Réalisations', route: 'realisations' },
+        { title: 'Blog', route: 'blog' }
+        ] %}
+        <header data-controller="navbar" data-navbar-target="header"
+            class="header top-0 left-0 z-40 flex w-full items-center absolute bg-transparent">
+            <div class="container">
+                <div class="relative -mx-4 flex items-center justify-between">
+                    <div class="w-60 max-w-full px-4 xl:mr-12">
+                        <a href="{{ path('home') }}" data-navbar-target="logo" class="header-logo block w-full py-8">
+                            <img src="{{ asset('images/logo/logo-cesepef.jpg') }}" alt="CESEPEF" width="160" height="60"
+                                class="h-auto max-h-[50px] w-auto">
+                        </a>
                     </div>
-                </div>
-            </header>
-
-            {% block body %}{% endblock %}
-
-            {# ════════════ FOOTER ════════════ #}
-            <footer class="relative z-10 bg-white pt-16 dark:bg-gray-dark md:pt-20 lg:pt-24">
-                <div class="container">
-                    <div class="-mx-4 flex flex-wrap">
-                        <div class="w-full px-4 md:w-1/2 lg:w-4/12 xl:w-5/12">
-                            <div class="mb-12 max-w-[360px] lg:mb-16">
-                                <a href="{{ path('home') }}" class="mb-8 inline-block">
-                                    <img src="{{ asset('images/logo/logo-cesepef.jpg') }}" alt="CESEPEF" width="160" height="60" class="h-auto max-h-[50px] w-auto">
-                                </a>
-                                <p class="mb-4 text-base leading-relaxed text-body-color dark:text-body-color-dark">Cabinet d'Expertise de Suivi &amp; Évaluation de Projets, d'Études et de Formations.</p>
-                                <p class="mb-9 text-sm text-body-color dark:text-body-color-dark">N'Djamena, Tchad | Fondé en octobre 2021<br>NIF : 9031479 | SARL pluripersonnelle</p>
-                                <div class="flex items-center gap-4">
-                                    <a href="https://linkedin.com" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer" class="text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary">
-                                        <svg width="18" height="16" viewBox="0 0 17 16" class="fill-current"><path d="M15.2196 0H1.99991C1.37516 0 0.875366 0.497491 0.875366 1.11936V14.3029C0.875366 14.8999 1.37516 15.4222 1.99991 15.4222H15.1696C15.7943 15.4222 16.2941 14.9247 16.2941 14.3029V1.09448C16.3441 0.497491 15.8443 0 15.2196 0ZM5.44852 13.1089H3.17444V5.7709H5.44852V13.1089ZM4.29899 4.75104C3.54929 4.75104 2.97452 4.15405 2.97452 3.43269C2.97452 2.71133 3.57428 2.11434 4.29899 2.11434C5.02369 2.11434 5.62345 2.71133 5.62345 3.43269C5.62345 4.15405 5.07367 4.75104 4.29899 4.75104ZM14.07 13.1089H11.796V9.55183C11.796 8.7061 11.771 7.58674 10.5964 7.58674C9.39693 7.58674 9.222 8.53198 9.222 9.47721V13.1089H6.94792V5.7709H9.17202V6.79076H9.19701C9.52188 6.19377 10.2466 5.59678 11.3711 5.59678C13.6952 5.59678 14.12 7.08925 14.12 9.12897V13.1089H14.07Z" /></svg>
-                                    </a>
-                                    <a href="mailto:info@cesepef.org" aria-label="Email" class="text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary">
-                                        <svg width="18" height="14" viewBox="0 0 24 18" class="fill-current"><path d="M21 0H3C1.35 0 0.015 1.35 0.015 3L0 15c0 1.65 1.35 3 3 3h18c1.65 0 3-1.35 3-3V3c0-1.65-1.35-3-3-3zm0 6l-9 5.625L3 6V3l9 5.625L21 3v3z" /></svg>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="w-full px-4 sm:w-1/2 md:w-1/2 lg:w-2/12 xl:w-2/12">
-                            <div class="mb-12 lg:mb-16">
-                                <h2 class="mb-10 text-xl font-bold text-black dark:text-white">Navigation</h2>
-                                <ul>
-                                    {% for l in [
-                                        { label: 'Accueil', route: 'home' }, { label: 'À propos', route: 'about' },
-                                        { label: 'Expertises', route: 'expertises' }, { label: 'Services', route: 'services' },
-                                        { label: 'Réalisations', route: 'realisations' }
-                                    ] %}
-                                        <li><a href="{{ path(l.route) }}" class="mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary">{{ l.label }}</a></li>
+                    <div class="flex w-full items-center justify-between px-4">
+                        <div>
+                            <button data-action="navbar#toggle" aria-label="Menu mobile"
+                                class="ring-primary absolute top-1/2 right-4 block translate-y-[-50%] rounded-lg px-3 py-[6px] focus:ring-2 lg:hidden">
+                                <span data-navbar-target="bar1"
+                                    class="relative my-1.5 block h-0.5 w-[30px] bg-black transition-all duration-300 dark:bg-white"></span>
+                                <span data-navbar-target="bar2"
+                                    class="relative my-1.5 block h-0.5 w-[30px] bg-black transition-all duration-300 dark:bg-white"></span>
+                                <span data-navbar-target="bar3"
+                                    class="relative my-1.5 block h-0.5 w-[30px] bg-black transition-all duration-300 dark:bg-white"></span>
+                            </button>
+                            <nav data-navbar-target="menu"
+                                class="navbar border-body-color/50 dark:border-body-color/20 dark:bg-dark absolute right-0 z-30 w-[250px] rounded border-[.5px] bg-white px-6 py-4 duration-300 lg:visible lg:static lg:w-auto lg:border-none lg:!bg-transparent lg:p-0 lg:opacity-100 invisible top-[120%] opacity-0">
+                                <ul class="block lg:flex lg:space-x-12">
+                                    {% for item in menu %}
+                                    <li class="group relative">
+                                        <a href="{{ path(item.route) }}"
+                                            class="flex py-2 text-base lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 {{ current == item.route ? 'text-primary dark:text-white' : 'text-dark hover:text-primary dark:text-white/70 dark:hover:text-white' }}">{{
+                                            item.title }}</a>
+                                    </li>
                                     {% endfor %}
                                 </ul>
-                            </div>
+                            </nav>
                         </div>
-                        <div class="w-full px-4 sm:w-1/2 md:w-1/2 lg:w-2/12 xl:w-2/12">
-                            <div class="mb-12 lg:mb-16">
-                                <h2 class="mb-10 text-xl font-bold text-black dark:text-white">Ressources</h2>
-                                <ul>
-                                    <li><a href="{{ path('blog') }}" class="mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary">Publications</a></li>
-                                    <li><a href="{{ path('contact') }}" class="mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary">Contact</a></li>
-                                    <li><a href="{{ path('home') }}" class="mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary">Politique de confidentialité</a></li>
-                                    <li><a href="{{ path('home') }}" class="mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary">Mentions légales</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="w-full px-4 md:w-1/2 lg:w-4/12 xl:w-3/12">
-                            <div class="mb-12 lg:mb-16">
-                                <h2 class="mb-10 text-xl font-bold text-black dark:text-white">Contact rapide</h2>
-                                <p class="mb-3 text-sm text-body-color dark:text-body-color-dark"><span class="font-semibold text-black dark:text-white">Email :</span> <a href="mailto:info@cesepef.org" class="hover:text-primary">info@cesepef.org</a></p>
-                                <p class="mb-3 text-sm text-body-color dark:text-body-color-dark"><span class="font-semibold text-black dark:text-white">Propositions :</span> <a href="mailto:propositions@cesepef.org" class="hover:text-primary">propositions@cesepef.org</a></p>
-                                <p class="mb-3 text-sm text-body-color dark:text-body-color-dark"><span class="font-semibold text-black dark:text-white">Tél :</span> (+235) 66 38 64 14</p>
-                                <p class="text-sm text-body-color dark:text-body-color-dark"><span class="font-semibold text-black dark:text-white">WhatsApp :</span> +235 66 38 64 14</p>
-                            </div>
+                        <div class="flex items-center justify-end pr-16 lg:pr-0">
+                            <a href="{{ path('contact') }}"
+                                class="ease-in-up shadow-btn hover:shadow-btn-hover bg-primary hover:bg-primary/90 hidden rounded-xs px-8 py-3 text-base font-medium text-white transition duration-300 md:block md:px-9 lg:px-6 xl:px-9">Contact</a>
+                            <button data-controller="theme-toggle" data-action="theme-toggle#toggle"
+                                aria-label="Basculer le thème"
+                                class="flex items-center justify-center text-black rounded-full cursor-pointer bg-gray-2 dark:bg-dark-bg h-9 w-9 dark:text-white md:h-14 md:w-14">
+                                <svg viewBox="0 0 23 23" class="w-5 h-5 stroke-current dark:hidden md:h-6 md:w-6"
+                                    fill="none">
+                                    <path
+                                        d="M9.55078 1.5C5.80078 1.5 1.30078 5.25 1.30078 11.25C1.30078 17.25 5.80078 21.75 11.8008 21.75C17.8008 21.75 21.5508 17.25 21.5508 13.5C13.3008 18.75 4.30078 9.75 9.55078 1.5Z"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                                <svg viewBox="0 0 25 24" fill="none" class="hidden w-5 h-5 dark:block md:h-6 md:w-6">
+                                    <path
+                                        d="M12.0508 16.5C10.8573 16.5 9.71271 16.0259 8.8688 15.182C8.02489 14.3381 7.55078 13.1935 7.55078 12C7.55078 10.8065 8.02489 9.66193 8.8688 8.81802C9.71271 7.97411 10.8573 7.5 12.0508 7.5C13.2443 7.5 14.3888 7.97411 15.2328 8.81802C16.0767 9.66193 16.5508 10.8065 16.5508 12C16.5508 13.1935 16.0767 14.3381 15.2328 15.182C14.3888 16.0259 13.2443 16.5 12.0508 16.5ZM12.0508 0C12.4650 0 12.8008 0.335786 12.8008 0.75V3.75C12.8008 4.16421 12.465 4.5 12.0508 4.5C11.6366 4.5 11.3008 4.16421 11.3008 3.75V0.75C11.3008 0.335786 11.6366 0 12.0508 0ZM12.0508 19.5C12.465 19.5 12.8008 19.8358 12.8008 20.25V23.25C12.8008 23.6642 12.465 24 12.0508 24C11.6366 24 11.3008 23.6642 11.3008 23.25V20.25C11.3008 19.8358 11.6366 19.5 12.0508 19.5ZM24.0508 12C24.0508 12.4142 23.715 12.75 23.3008 12.75H20.3008C19.8866 12.75 19.5508 12.4142 19.5508 12C19.5508 11.5858 19.8866 11.25 20.3008 11.25H23.3008C23.715 11.25 24.0508 11.5858 24.0508 12ZM4.55078 12C4.55078 12.4142 4.21499 12.75 3.80078 12.75H0.800781C0.386567 12.75 0.0507812 12.4142 0.0507812 12C0.0507812 11.5858 0.386567 11.25 0.800781 11.25H3.80078C4.21499 11.25 4.55078 11.5858 4.55078 12Z"
+                                        fill="currentColor"></path>
+                                </svg>
+                            </button>
                         </div>
                     </div>
-                    <div class="h-px w-full bg-linear-to-r from-transparent via-[#D2D8E183] to-transparent dark:via-[#959CB183]"></div>
-                    <div class="py-8">
-                        <p class="text-center text-base text-body-color dark:text-white">© {{ "now"|date("Y") }} CESEPEF — Cabinet d'Expertise de Suivi &amp; Évaluation de Projets, d'Études et de Formations. Tous droits réservés.</p>
-                    </div>
                 </div>
-                <div class="absolute right-0 top-14 z-[-1]">
-                    <svg width="55" height="99" viewBox="0 0 55 99" fill="none" xmlns="http://www.w3.org/2000/svg"><circle opacity="0.8" cx="49.5" cy="49.5" r="49.5" fill="#959CB1" /></svg>
-                </div>
-            </footer>
-
-            {# Retour en haut #}
-            <div class="fixed right-8 bottom-8 z-99" data-controller="scroll-top">
-                <button data-scroll-top-target="button" data-action="scroll-top#top" aria-label="Retour en haut" class="hidden bg-primary/80 flex h-10 w-10 cursor-pointer items-center justify-center rounded-md text-white shadow-md transition duration-300 ease-in-out hover:bg-primary">
-                    <span class="mt-[6px] h-3 w-3 rotate-45 border-t border-l border-white"></span>
-                </button>
             </div>
+        </header>
+
+        {% block body %}{% endblock %}
+
+        {# ════════════ FOOTER ════════════ #}
+        <footer class="relative z-10 bg-white pt-16 dark:bg-gray-dark md:pt-20 lg:pt-24">
+            <div class="container">
+                <div class="-mx-4 flex flex-wrap">
+                    <div class="w-full px-4 md:w-1/2 lg:w-4/12 xl:w-5/12">
+                        <div class="mb-12 max-w-[360px] lg:mb-16">
+                            <a href="{{ path('home') }}" class="mb-8 inline-block">
+                                <img src="{{ asset('images/logo/logo-cesepef.jpg') }}" alt="CESEPEF" width="160"
+                                    height="60" class="h-auto max-h-[50px] w-auto">
+                            </a>
+                            <p class="mb-4 text-base leading-relaxed text-body-color dark:text-body-color-dark">Cabinet
+                                d'Expertise de Suivi &amp; Évaluation de Projets, d'Études et de Formations.</p>
+                            <p class="mb-9 text-sm text-body-color dark:text-body-color-dark">N'Djamena, Tchad | Fondé
+                                en octobre 2021<br>NIF : 9031479 | SARL pluripersonnelle</p>
+                            <div class="flex items-center gap-4">
+                                <a href="https://linkedin.com" aria-label="LinkedIn" target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary">
+                                    <svg width="18" height="16" viewBox="0 0 17 16" class="fill-current">
+                                        <path
+                                            d="M15.2196 0H1.99991C1.37516 0 0.875366 0.497491 0.875366 1.11936V14.3029C0.875366 14.8999 1.37516 15.4222 1.99991 15.4222H15.1696C15.7943 15.4222 16.2941 14.9247 16.2941 14.3029V1.09448C16.3441 0.497491 15.8443 0 15.2196 0ZM5.44852 13.1089H3.17444V5.7709H5.44852V13.1089ZM4.29899 4.75104C3.54929 4.75104 2.97452 4.15405 2.97452 3.43269C2.97452 2.71133 3.57428 2.11434 4.29899 2.11434C5.02369 2.11434 5.62345 2.71133 5.62345 3.43269C5.62345 4.15405 5.07367 4.75104 4.29899 4.75104ZM14.07 13.1089H11.796V9.55183C11.796 8.7061 11.771 7.58674 10.5964 7.58674C9.39693 7.58674 9.222 8.53198 9.222 9.47721V13.1089H6.94792V5.7709H9.17202V6.79076H9.19701C9.52188 6.19377 10.2466 5.59678 11.3711 5.59678C13.6952 5.59678 14.12 7.08925 14.12 9.12897V13.1089H14.07Z" />
+                                    </svg>
+                                </a>
+                                <a href="mailto:info@cesepef.org" aria-label="Email"
+                                    class="text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary">
+                                    <svg width="18" height="14" viewBox="0 0 24 18" class="fill-current">
+                                        <path
+                                            d="M21 0H3C1.35 0 0.015 1.35 0.015 3L0 15c0 1.65 1.35 3 3 3h18c1.65 0 3-1.35 3-3V3c0-1.65-1.35-3-3-3zm0 6l-9 5.625L3 6V3l9 5.625L21 3v3z" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full px-4 sm:w-1/2 md:w-1/2 lg:w-2/12 xl:w-2/12">
+                        <div class="mb-12 lg:mb-16">
+                            <h2 class="mb-10 text-xl font-bold text-black dark:text-white">Navigation</h2>
+                            <ul>
+                                {% for l in [
+                                { label: 'Accueil', route: 'home' }, { label: 'À propos', route: 'about' },
+                                { label: 'Expertises', route: 'expertises' }, { label: 'Services', route: 'services' },
+                                { label: 'Réalisations', route: 'realisations' }
+                                ] %}
+                                <li><a href="{{ path(l.route) }}"
+                                        class="mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary">{{
+                                        l.label }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="w-full px-4 sm:w-1/2 md:w-1/2 lg:w-2/12 xl:w-2/12">
+                        <div class="mb-12 lg:mb-16">
+                            <h2 class="mb-10 text-xl font-bold text-black dark:text-white">Ressources</h2>
+                            <ul>
+                                <li><a href="{{ path('blog') }}"
+                                        class="mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary">Publications</a>
+                                </li>
+                                <li><a href="{{ path('contact') }}"
+                                        class="mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary">Contact</a>
+                                </li>
+                                <li><a href="{{ path('home') }}"
+                                        class="mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary">Politique
+                                        de confidentialité</a></li>
+                                <li><a href="{{ path('home') }}"
+                                        class="mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary">Mentions
+                                        légales</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="w-full px-4 md:w-1/2 lg:w-4/12 xl:w-3/12">
+                        <div class="mb-12 lg:mb-16">
+                            <h2 class="mb-10 text-xl font-bold text-black dark:text-white">Contact rapide</h2>
+                            <p class="mb-3 text-sm text-body-color dark:text-body-color-dark"><span
+                                    class="font-semibold text-black dark:text-white">Email :</span> <a
+                                    href="mailto:info@cesepef.org" class="hover:text-primary">info@cesepef.org</a></p>
+                            <p class="mb-3 text-sm text-body-color dark:text-body-color-dark"><span
+                                    class="font-semibold text-black dark:text-white">Propositions :</span> <a
+                                    href="mailto:propositions@cesepef.org"
+                                    class="hover:text-primary">propositions@cesepef.org</a></p>
+                            <p class="mb-3 text-sm text-body-color dark:text-body-color-dark"><span
+                                    class="font-semibold text-black dark:text-white">Tél :</span> (+235) 66 38 64 14</p>
+                            <p class="text-sm text-body-color dark:text-body-color-dark"><span
+                                    class="font-semibold text-black dark:text-white">WhatsApp :</span> +235 66 38 64 14
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="h-px w-full bg-linear-to-r from-transparent via-[#D2D8E183] to-transparent dark:via-[#959CB183]">
+                </div>
+                <div class="py-8">
+                    <p class="text-center text-base text-body-color dark:text-white">© {{ "now"|date("Y") }} CESEPEF —
+                        Cabinet d'Expertise de Suivi &amp; Évaluation de Projets, d'Études et de Formations. Tous droits
+                        réservés.</p>
+                </div>
+            </div>
+            <div class="absolute right-0 top-14 z-[-1]">
+                <svg width="55" height="99" viewBox="0 0 55 99" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle opacity="0.8" cx="49.5" cy="49.5" r="49.5" fill="#959CB1" />
+                </svg>
+            </div>
+        </footer>
+
+        {# Retour en haut #}
+        <div class="fixed right-8 bottom-8 z-99" data-controller="scroll-top">
+            <button data-scroll-top-target="button" data-action="scroll-top#top" aria-label="Retour en haut"
+                class="hidden bg-primary/80 flex h-10 w-10 cursor-pointer items-center justify-center rounded-md text-white shadow-md transition duration-300 ease-in-out hover:bg-primary">
+                <span class="mt-[6px] h-3 w-3 rotate-45 border-t border-l border-white"></span>
+            </button>
         </div>
-    </body>
+    </div>
+</body>
+
 </html>
