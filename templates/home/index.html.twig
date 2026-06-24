@@ -62,15 +62,15 @@
         {{ ui.section_title("Nos Domaines d'Expertise", "Quatre piliers structurent notre offre. Chacun mobilise des méthodologies éprouvées, des outils numériques modernes et une équipe d'experts dédiée.", true) }}
         <div class="grid grid-cols-1 gap-x-8 gap-y-14 md:grid-cols-2 lg:grid-cols-2">
             {% for f in [
-                { title: 'Suivi & Évaluation (M&E / SERA)', paragraph: "Conception de cadres logiques, évaluations indépendantes (ex-ante, mi-parcours, finales) selon les six critères OCDE-CAD, études d'impact et systèmes SERA en temps réel via KoboToolbox et ODK." },
-                { title: 'Études & Recherches Appliquées', paragraph: "Études de faisabilité, diagnostics territoriaux, enquêtes ménages à grande échelle, études de filières, cartographie des parties prenantes et analyses de risques fondées sur des données fiables." },
-                { title: 'Formation & Renforcement de Capacités', paragraph: "Formations certifiantes en GAR, cadre logique, collecte mobile de données, analyse statistique (R, Stata, SPSS). Dispositifs sur mesure pour administrations, ONG, agences onusiennes, en présentiel ou e-learning." },
-                { title: 'Conseil & Assistance Technique', paragraph: "Plans stratégiques institutionnels, appui à la rédaction de propositions techniques pour appels d'offres, développement institutionnel des ONG, outils numériques sur mesure (tableaux de bord, plateformes SERA)." }
+                { title: 'Suivi & Évaluation (M&E / SERA)', paragraph: "Conception de cadres logiques, évaluations indépendantes (ex-ante, mi-parcours, finales) selon les six critères OCDE-CAD, études d'impact et systèmes SERA en temps réel via KoboToolbox et ODK.", icon: 'lucide:line-chart' },
+                { title: 'Études & Recherches Appliquées', paragraph: "Études de faisabilité, diagnostics territoriaux, enquêtes ménages à grande échelle, études de filières, cartographie des parties prenantes et analyses de risques fondées sur des données fiables.", icon: 'lucide:search' },
+                { title: 'Formation & Renforcement de Capacités', paragraph: "Formations certifiantes en GAR, cadre logique, collecte mobile de données, analyse statistique (R, Stata, SPSS). Dispositifs sur mesure pour administrations, ONG, agences onusiennes, en présentiel ou e-learning.", icon: 'lucide:graduation-cap' },
+                { title: 'Conseil & Assistance Technique', paragraph: "Plans stratégiques institutionnels, appui à la rédaction de propositions techniques pour appels d'offres, développement institutionnel des ONG, outils numériques sur mesure (tableaux de bord, plateformes SERA).", icon: 'lucide:briefcase' }
             ] %}
                 <div class="w-full">
                     <div>
                         <div class="bg-primary/10 text-primary mb-10 flex h-[70px] w-[70px] items-center justify-center rounded-md">
-                            <svg width="40" height="40" viewBox="0 0 40 40" class="fill-current"><circle cx="20" cy="20" r="18" opacity="0.5"/><circle cx="20" cy="20" r="8"/></svg>
+                            {{ ux_icon(f.icon, { class: 'h-9 w-9' }) }}
                         </div>
                         <h3 class="mb-5 text-xl font-bold text-black sm:text-2xl lg:text-xl xl:text-2xl dark:text-white">{{ f.title }}</h3>
                         <p class="text-body-color pr-[10px] text-base leading-relaxed font-medium">{{ f.paragraph }}</p>
@@ -84,7 +84,7 @@
 {# ════════════ BRANDS (Partenaires) ════════════ #}
 <section class="pt-16">
     <div class="container">
-        {{ ui.section_title('Nos Partenaires & Bailleurs', "CESEPEF travaille avec les principaux bailleurs internationaux, agences onusiennes, États et institutions financières de développement.", true) }}
+        {{ ui.section_title('Nos Partenaires & Bailleurs', "CESEPEF intervient dans des projets financés par les principaux bailleurs internationaux, agences onusiennes, États et institutions financières de développement.", true) }}
     </div>
     <div class="relative overflow-hidden bg-gray-light py-8 dark:bg-gray-dark">
         <div class="pointer-events-none absolute left-0 top-0 z-10 h-full w-24 bg-linear-to-r from-gray-light to-transparent dark:from-gray-dark"></div>
@@ -96,7 +96,7 @@
                         {% if p.logo %}<img src="{{ p.logo }}" alt="{{ p.name }}" class="h-10 w-auto object-contain opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0">
                         {% else %}<span class="px-2 text-center text-[11px] font-semibold leading-tight text-gray-400">{{ p.name }}</span>{% endif %}
                     </div>
-                    <span class="text-center text-xs font-medium text-body-color dark:text-body-color-dark">{{ p.name }}</span>
+                    {# <span class="text-center text-xs font-medium text-body-color dark:text-body-color-dark">{{ p.name }}</span> #}
                 </div>
             {% endfor %}
         </div>
@@ -109,18 +109,18 @@
         <div class="border-b border-body-color/[.15] pb-16 dark:border-white/[.15] md:pb-20 lg:pb-28">
             <div class="-mx-4 flex flex-wrap items-center">
                 <div class="w-full px-4 lg:w-1/2">
-                    {{ ui.section_title("Cabinet d'expertise indépendant basé à N'Djamena", "CESEPEF — Cabinet d'Expertise de Suivi & Évaluation de Projets, d'Études et de Formations — est un bureau d'études et de conseil de droit tchadien, fondé en octobre 2021. Notre raison d'être : combler le déficit d'expertise indépendante, rigoureuse et contextualisée en matière de suivi-évaluation, d'études et de renforcement des capacités.", false, '570px', '44px') }}
+                    {{ ui.section_title("Cabinet d'expertise indépendant basé à N'Djamena", "CESEPEF: Cabinet d'Expertise de Suivi & Évaluation de Projets, d'Études et de Formations — est un bureau d'études et de conseil de droit tchadien, fondé en octobre 2021. Notre raison d'être : combler le déficit d'expertise indépendante, rigoureuse et contextualisée en matière de suivi-évaluation, d'études et de renforcement des capacités.", false, '570px', '44px') }}
                     <div class="mb-12 max-w-[570px] lg:mb-0">
                         <div class="mx-[-12px] flex flex-wrap">
                             {% for col in [
                                 ['Expertise nationale reconnue', 'Standards OCDE-CAD & GAR', "Indépendance d'analyse"],
-                                ["8+ pays d'intervention", 'Approche numérique & data', 'Livrables actionnables']
+                                ['Approche numérique & data', 'Livrables actionnables']
                             ] %}
                                 <div class="w-full px-3 sm:w-1/2 lg:w-full xl:w-1/2">
                                     {% for text in col %}
                                         <p class="text-body-color mb-5 flex items-center text-lg font-medium">
                                             <span class="bg-primary/10 text-primary mr-4 flex h-[30px] w-[30px] items-center justify-center rounded-md">
-                                                <svg width="16" height="13" viewBox="0 0 16 13" class="fill-current"><path d="M5.8535 12.6631C5.65824 12.8584 5.34166 12.8584 5.1464 12.6631L0.678505 8.1952C0.483242 7.99994 0.483242 7.68336 0.678505 7.4881L2.32921 5.83739C2.52467 5.64193 2.84166 5.64216 3.03684 5.83791L5.14622 7.95354C5.34147 8.14936 5.65859 8.14952 5.85403 7.95388L13.3797 0.420561C13.575 0.22513 13.8917 0.225051 14.087 0.420383L15.7381 2.07143C15.9333 2.26669 15.9333 2.58327 15.7381 2.77854L5.8535 12.6631Z"/></svg>
+                                                {{ ux_icon('lucide:check', { class: 'h-4 w-4' }) }}
                                             </span>{{ text }}
                                         </p>
                                     {% endfor %}
@@ -136,10 +136,10 @@
                             <h4 class="mb-2 text-lg font-semibold text-primary">Ancrage national — Tchad</h4>
                             <p class="text-base text-body-color dark:text-body-color-dark">Connaissance fine du contexte politique, administratif et socio-économique tchadien, indispensable pour des analyses pertinentes et des recommandations applicables.</p>
                         </div>
-                        <div class="mb-6">
+                        {# <div class="mb-6">
                             <h4 class="mb-2 text-lg font-semibold text-primary">Couverture régionale — Afrique centrale & Sahel</h4>
                             <p class="text-base text-body-color dark:text-body-color-dark">Interventions démontrées au Mali, Niger, Burkina Faso, Sénégal, Côte d'Ivoire, Cameroun, RCA, à travers un réseau d'experts associés.</p>
-                        </div>
+                        </div> #}
                         <div>
                             <h4 class="mb-2 text-lg font-semibold text-primary">Standards internationaux</h4>
                             <p class="text-base text-body-color dark:text-body-color-dark">Alignement systématique sur les méthodologies OCDE-CAD, gestion axée sur les résultats (GAR), cadres logiques et théories du changement.</p>
@@ -210,7 +210,7 @@
                     <h4 class="mb-1 text-sm font-bold leading-snug text-black dark:text-white">{{ m.name }}</h4>
                     <p class="mb-3 text-xs text-body-color dark:text-body-color-dark">{{ m.role }}</p>
                     {% if m.department %}<p class="mb-3 text-[11px] font-medium text-primary/70">{{ m.department }}</p>{% endif %}
-                    {% if m.linkedin %}<a href="{{ m.linkedin }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de {{ m.name }}" class="inline-flex items-center justify-center rounded-full bg-primary/10 p-2 text-primary transition hover:bg-primary hover:text-white"><svg width="15" height="15" viewBox="0 0 17 16" class="fill-current"><path d="M15.2196 0H1.99991C1.37516 0 0.875366 0.497491 0.875366 1.11936V14.3029C0.875366 14.8999 1.37516 15.4222 1.99991 15.4222H15.1696C15.7943 15.4222 16.2941 14.9247 16.2941 14.3029V1.09448C16.3441 0.497491 15.8443 0 15.2196 0ZM5.44852 13.1089H3.17444V5.7709H5.44852V13.1089ZM4.29899 4.75104C3.54929 4.75104 2.97452 4.15405 2.97452 3.43269C2.97452 2.71133 3.57428 2.11434 4.29899 2.11434C5.02369 2.11434 5.62345 2.71133 5.62345 3.43269C5.62345 4.15405 5.07367 4.75104 4.29899 4.75104ZM14.07 13.1089H11.796V9.55183C11.796 8.7061 11.771 7.58674 10.5964 7.58674C9.39693 7.58674 9.222 8.53198 9.222 9.47721V13.1089H6.94792V5.7709H9.17202V6.79076H9.19701C9.52188 6.19377 10.2466 5.59678 11.3711 5.59678C13.6952 5.59678 14.12 7.08925 14.12 9.12897V13.1089H14.07Z"/></svg></a>{% endif %}
+                    {% if m.linkedin %}<a href="{{ m.linkedin }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de {{ m.name }}" class="inline-flex items-center justify-center rounded-full bg-primary/10 p-2 text-primary transition hover:bg-primary hover:text-white">{{ ux_icon('bi:linkedin', { class: 'h-[15px] w-[15px]' }) }}</a>{% endif %}
                 </div>
             {% endfor %}
         </div>
@@ -267,7 +267,7 @@
                         <ul class="mb-6 space-y-2">
                             {% for l in offre.livrables %}
                                 <li class="flex items-center gap-2 text-sm">
-                                    <svg class="shrink-0 {{ offre.highlight ? 'text-white' : 'text-primary' }}" width="14" height="11" viewBox="0 0 16 13" fill="currentColor"><path d="M5.8535 12.6631C5.65824 12.8584 5.34166 12.8584 5.1464 12.6631L0.678505 8.1952C0.483242 7.99994 0.483242 7.68336 0.678505 7.4881L2.32921 5.83739C2.52467 5.64193 2.84166 5.64216 3.03684 5.83791L5.14622 7.95354C5.34147 8.14936 5.65859 8.14952 5.85403 7.95388L13.3797 0.420561C13.575 0.22513 13.8917 0.225051 14.087 0.420383L15.7381 2.07143C15.9333 2.26669 15.9333 2.58327 15.7381 2.77854L5.8535 12.6631Z"/></svg>
+                                    {{ ux_icon('lucide:check', { class: 'shrink-0 h-4 w-4 ' ~ (offre.highlight ? 'text-white' : 'text-primary') }) }}
                                     <span class="{{ offre.highlight ? 'text-white/90' : 'text-body-color dark:text-body-color-dark' }}">{{ l }}</span>
                                 </li>
                             {% endfor %}

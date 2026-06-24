@@ -79,7 +79,7 @@
                             </div>
                             <div class="w-full px-4">
                                 <button type="submit" class="flex items-center gap-3 rounded-xs bg-primary px-9 py-4 text-base font-medium text-white shadow-submit duration-300 hover:bg-primary/90 dark:shadow-submit-dark">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                                    {{ ux_icon('lucide:send', { class: 'h-4 w-4' }) }}
                                     Envoyer ma demande
                                 </button>
                             </div>
@@ -92,14 +92,14 @@
                 <div class="rounded-xs bg-white p-8 shadow-three dark:bg-gray-dark">
                     <h3 class="mb-6 text-xl font-bold text-black dark:text-white">Coordonnées institutionnelles</h3>
                     <div class="mb-5 flex items-start gap-3">
-                        <span class="mt-1 text-primary"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></span>
+                        <span class="mt-1 text-primary">{{ ux_icon('lucide:map-pin', { class: 'h-5 w-5' }) }}</span>
                         <div>
                             <p class="font-semibold text-black dark:text-white">Siège</p>
                             <p class="text-sm text-body-color dark:text-body-color-dark">7ᵉ Arrondissement, Quartier Abéna<br>Axe Hôtel Mirande, N'Djamena – Tchad<br>BP 716, N'Djamena</p>
                         </div>
                     </div>
                     <div class="mb-5 flex items-start gap-3">
-                        <span class="mt-1 text-primary"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></span>
+                        <span class="mt-1 text-primary">{{ ux_icon('lucide:phone', { class: 'h-5 w-5' }) }}</span>
                         <div>
                             <p class="font-semibold text-black dark:text-white">Téléphones</p>
                             <p class="text-sm text-body-color dark:text-body-color-dark">(+235) 66 38 64 14<br>(+235) 68 82 62 43<br>(+235) 66 23 66 89</p>
@@ -107,7 +107,7 @@
                         </div>
                     </div>
                     <div class="mb-5 flex items-start gap-3">
-                        <span class="mt-1 text-primary"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></span>
+                        <span class="mt-1 text-primary">{{ ux_icon('bi:envelope-fill', { class: 'h-5 w-5' }) }}</span>
                         <div>
                             <p class="font-semibold text-black dark:text-white">Emails</p>
                             <a href="mailto:info@cesepef.org" class="block text-sm text-primary hover:underline">info@cesepef.org</a>
@@ -116,7 +116,7 @@
                         </div>
                     </div>
                     <div class="flex items-start gap-3">
-                        <span class="mt-1 text-primary"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg></span>
+                        <span class="mt-1 text-primary">{{ ux_icon('lucide:clock', { class: 'h-5 w-5' }) }}</span>
                         <div>
                             <p class="font-semibold text-black dark:text-white">Horaires</p>
                             <p class="text-sm text-body-color dark:text-body-color-dark">Lun – Jeu : 8h00 – 17h00 (GMT+1)<br>Vendredi : 8h00 – 13h00<br>Samedi : sur rendez-vous</p>
